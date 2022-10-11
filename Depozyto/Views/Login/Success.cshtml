@@ -1,0 +1,15 @@
+﻿@model LoginModel
+@{
+	ViewData["Title"] = "Poprawnie Zalogowano";
+}
+
+
+<center>
+	<h1>Zalogowano Poprawnie</h1>
+	<h3>Witaj, <bold>@Model.Login</bold></h3>
+
+	<button type="button" class="btn btn-info btn-sm">
+                    <a asp-action="Index" asp-controller="">Przejdź do panelu sterowania</a>
+                </button>
+
+</center>

@@ -1,4 +1,5 @@
 ﻿using Depozyto.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -27,6 +28,18 @@ namespace Depozyto.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [AllowAnonymous]
+        public IActionResult WhatIsDepozyt()
+        {
+            return View("WhatIsDepozyt");
+        }
+
+        [AllowAnonymous]
+        public IActionResult HowItWorks()
+        {
+            return View("HowItWorks");
         }
     }
 }

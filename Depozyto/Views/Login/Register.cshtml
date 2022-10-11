@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Depozyto.Models.RegisterModel
+@{
 	ViewData["Title"] = "Strona Rejestrowania";
 }
 
@@ -13,39 +14,73 @@
 			width: 400px;
 			margin: auto;">
 
-				<div class="form-group">
-					<label class="col-form-label mt-1" for="inputDefault">Login</label>
-					<input type="text" class="form-control" placeholder="Login" id="inputDefault">
-				</div>
+				<form id="Register" asp-action="CreateAccount" asp-controller="Login" method="post">
+					<fieldset>
+						<div class="row align-items-center justify-content-center">
+							<div class="form-group col-md-6">
+								<label asp-for="Login" class="control-label"></label>
+								<input asp-for="Login" class="form-control" placeholder="Login" type="text" />
+								<span asp-validation-for="Login" class="text-danger"></span>
+								@if (ViewData["LoginDouble"] != null)
+								{
+									<br />
+									<center>
+										<h5>Login jest już zajęty</h5>
+									</center>
+								}
+							</div>
+						</div>
+						<br />
+						<div class="row align-items-center justify-content-center">
+							<div class="form-group col-md-6">
+								<label asp-for="Password" class="control-label"></label>
+								<input asp-for="Password" class="form-control" placeholder="Hasło" type="password" />
+								<span asp-validation-for="Password" class="text-danger"></span>
+							</div>
+						</div>
+						<br />
+						<div class="row align-items-center justify-content-center">
+							<div class="form-group col-md-6">
+								<label asp-for="ConfirmPassword" class="control-label"></label>
+								<input asp-for="ConfirmPassword" class="form-control" placeholder="Potwierdź Hasło" type="password" />
+								<span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+							</div>
+						</div>
+						<br />
+						<div class="row align-items-center justify-content-center">
+							<div class="form-group col-md-6">
+								<label asp-for="Name" class="control-label"></label>
+								<input asp-for="Name" class="form-control" placeholder="Imię" type="text" />
+								<span asp-validation-for="Name" class="text-danger"></span>
+							</div>
+						</div>
+						<br />
+						<div class="row align-items-center justify-content-center">
+							<div class="form-group col-md-6">
+								<label asp-for="LastName" class="control-label"></label>
+								<input asp-for="LastName" class="form-control" placeholder="Nazwisko" type="text" />
+								<span asp-validation-for="LastName" class="text-danger"></span>
+							</div>
+						</div>
+						<br />
+						<div class="row align-items-center justify-content-center">
+							<div class="form-group col-md-6">
+								<label asp-for="Email" class="control-label"></label>
+								<input asp-for="Email" class="form-control" placeholder="Email" type="text" />
+								<span asp-validation-for="Email" class="text-danger"></span>
+							</div>
+						</div>
 
-				<div class="form-group">
-					<label for="exampleInputPassword1" class="form-label mt-2">Hasło</label>
-					<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Hasło">
-				</div>
+					</fieldset>
+					<div class="row">
+						<div class="form-group col-md-12 text-center mt-md-4">
+							<input type="submit" value="Stwórz konto" class="btn btn-success" />
+						</div>
+					</div>
+				</form>
 
-				<div class="form-group">
-					<label for="exampleInputPassword1" class="form-label mt-2">Potwierdź Hasło</label>
-					<input type="password" class="form-control" id="exampleInputPassword2" placeholder="Potwierdź Hasło">
-				</div>
 
-				<div class="form-group">
-					<label for="exampleInputPassword1" class="form-label mt-2">Imię</label>
-					<input type="text" class="form-control" id="inputDefault" placeholder="Imię">
-				</div>
 
-				<div class="form-group">
-					<label for="exampleInputPassword1" class="form-label mt-2">Nazwisko</label>
-					<input type="text" class="form-control" id="inputDefault" placeholder="Nazwisko">
-				</div>
-
-				<div class="form-group">
-					<label for="exampleInputPassword1" class="form-label mt-2">E-mail</label>
-					<input type="text" class="form-control" id="inputDefault" placeholder="E-mail">
-				</div>
-
-				<br />
-				<button type="button" class="btn btn-success btn-lg">Stwórz konto</button>
-				<br />
 			
 			</div>
 		</div>
