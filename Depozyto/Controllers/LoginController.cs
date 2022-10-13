@@ -4,12 +4,17 @@ using System;
 using Depozyto.Models;
 using System.Data.SqlClient;
 using System.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
 
 namespace Depozyto.Controllers
 {
     public class LoginController : Controller
     {
-        
+
+
+
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
         SqlDataReader dr;
@@ -18,30 +23,61 @@ namespace Depozyto.Controllers
 
         // Login
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(UserModel usr)
         {
+            if (usr.loggedIn)
+            {
+                ViewData["LoggedIn"] = "Zalogowano";
+            }
             return View();
         }
 
         void connectionString()
         {
+
             //połączenia serwera
             con.ConnectionString = "Server=localhost\\SQLEXPRESS;Initial Catalog=epicDataBase;Persist Security Info=True;User ID=sa;Password=haslo";
         }
-        public IActionResult Index(LoginModel log)
+
+
+
+        //Logowanie
+        public async Task<IActionResult> Index(LoginModel log, UserModel usr)
         {
+
+
             //sprawdza czy w bazie danych jest taki urzytkownik
             connectionString();
             con.Open();
             com.Connection = con;
-            com.CommandText = "select * from dbo.Clients where Login='"+log.Login+"' and Haslo='"+log.Password+"'";
+            com.CommandText = "select * from dbo.Clients where Login='" + log.Login + "' and Haslo='" + log.Password + "'";
             dr = com.ExecuteReader();
             if (dr.Read())
             {
-                //znalazl urzytkownika
+                usr.Login = dr["Login"].ToString();
+                usr.Password = dr["Haslo"].ToString();
+                usr.Name = dr["Imie"].ToString();
+                usr.LastName = dr["Nazwisko"].ToString();
+                usr.Email = dr["Email"].ToString();
+
                 con.Close();
+                //znalazl urzytkownika
+
                 log.loggedIn = true;
-                return View("Success", log);
+                usr.loggedIn = true;
+
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Email,usr.Email),
+                    new Claim(ClaimTypes.Name,usr.Name)
+                };
+
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new System.Security.Claims.ClaimsPrincipal(claimsIdentity));
+
+
+                return RedirectToAction("Index", "Home");
             }
             else
             {
@@ -51,12 +87,16 @@ namespace Depozyto.Controllers
                 ViewData["LoginFlag"] = "Nieprawidłowy login lub hasło!!!";
                 return View();
             }
-            
+
+
+
+
         }
 
         // Login/Register
         public ActionResult Register()
         {
+
             return View();
         }
 
@@ -90,14 +130,17 @@ namespace Depozyto.Controllers
             //sprawdzamy czy mozemy zarejestrowac nowego klienta
             CheckRegister(reg);
 
-            
-            if (canRegister) 
+
+            if (canRegister)
             {
                 connectionString();
                 SqlCommand com = new SqlCommand("SP_Client", con);
                 com.CommandType = CommandType.StoredProcedure;
                 com.Parameters.AddWithValue("@Login", reg.Login);
                 com.Parameters.AddWithValue("@Haslo", reg.Password);
+                com.Parameters.AddWithValue("@Imie", reg.Name);
+                com.Parameters.AddWithValue("@Nazwisko", reg.LastName);
+                com.Parameters.AddWithValue("@Email", reg.Email);
                 con.Open();
                 int i = com.ExecuteNonQuery();
                 con.Close();
@@ -118,7 +161,14 @@ namespace Depozyto.Controllers
                 ViewData["LoginDouble"] = "Login jest już zajęty przez innego urzytkownika";
                 return View("Register");
             }
-            
+
+        }
+
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete("sesja");
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

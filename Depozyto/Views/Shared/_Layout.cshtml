@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@model ViewModelBase
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -24,22 +26,41 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        
+
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="DashBoard" asp-action="Index">Dashboard</a>
                         </li>
-                        
-                        <li class="nav-item">
-                            
-                        </li>
+
                     </ul>
+                    
+                   
                     <div>
-                        
-                            <center>
-                                <a class="nav-link text-light" asp-area="" asp-controller="Login" asp-action="Index"><right>Zaloguj się lub Zarejestruj</right></a>
+                        @if(User.Identity.IsAuthenticated)
+                        {
+                            <div style="display:flex">
+                                <center>
+                                            <a class="nav-link text-light" asp-area="" asp-controller="Home" 
+                                            asp-action="Index" style="margin-right:20px">Witaj, @User.Identity.Name</a>
+                                </center>
+                                
+                                <center>
+                                <a class="nav-link text-light" asp-area="" asp-controller="Login"
+                                    asp-action="Logout"><right>Wyloguj się</right></a>
+                                </center>
+                            </div>
+                        }else
+                        {
+                           <center>
+                                <a class="nav-link text-light" asp-area="" asp-controller="Login"
+                               asp-action="Index"><right>Zaloguj się lub Zarejestruj</right></a>
                             </center>
+                        }
                         
                     </div>
+                    
+                    
+                   
+                    
                 </div>
             </div>
         </nav>

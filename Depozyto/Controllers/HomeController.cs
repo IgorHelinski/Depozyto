@@ -7,6 +7,7 @@ namespace Depozyto.Controllers
 {
     public class HomeController : Controller
     {
+        
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -14,11 +15,14 @@ namespace Depozyto.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(UserModel usr)
         {
+           
+            
             return View();
         }
 
+        [Authorize]
         public IActionResult Privacy()
         {
             return View();

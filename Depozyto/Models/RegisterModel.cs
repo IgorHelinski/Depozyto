@@ -5,6 +5,8 @@ namespace Depozyto.Models
 {
 	public class RegisterModel
 	{
+        //Dane rejestracji
+
 		public string Login { get; set; }
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }
