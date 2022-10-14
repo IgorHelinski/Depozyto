@@ -1,5 +1,6 @@
 ﻿using Depozyto.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -15,10 +16,8 @@ namespace Depozyto.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index(UserModel usr)
+        public IActionResult Index()
         {
-           
-            
             return View();
         }
 

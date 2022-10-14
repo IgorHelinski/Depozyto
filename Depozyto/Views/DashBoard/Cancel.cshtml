@@ -1,4 +1,8 @@
-﻿<html>
+﻿@{
+    ViewData["Title"] = "Anuluj";
+}
+
+<html>
 <body>
     <div class="container">
         <center>
@@ -7,7 +11,7 @@
         </center>
     </div>
     <script>
-        if (confirm("Czy napewno chcesz anulować transakcję?") == true) {
+        if (confirm("Czy napewno chcesz anulować?") == true) {
             window.location="Index";
         } else {
             window.location="Transaction";

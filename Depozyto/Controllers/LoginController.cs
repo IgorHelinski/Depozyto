@@ -2,7 +2,6 @@
 using System.Data.SqlClient;
 using System;
 using Depozyto.Models;
-using System.Data.SqlClient;
 using System.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
@@ -12,8 +11,6 @@ namespace Depozyto.Controllers
 {
     public class LoginController : Controller
     {
-
-
 
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
@@ -69,7 +66,8 @@ namespace Depozyto.Controllers
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Email,usr.Email),
-                    new Claim(ClaimTypes.Name,usr.Name)
+                    new Claim(ClaimTypes.Name,usr.Name),
+                    new Claim(ClaimTypes.Surname,usr.LastName)
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

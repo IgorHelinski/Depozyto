@@ -1,17 +1,46 @@
-﻿<html>
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+<html>
 <body>
     <div class="container">
+        <div>
             <div class="account container">
                 <ul>
                     <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Transakcje</a>
                         <div class="dropdown-menu" style="">
                             <a class="dropdown-item" asp-controller="DashBoard" asp-action="Transaction">Wykonaj Transakje</a>
+                            <a class="dropdown-item" asp-controller="DashBoard" asp-action="Deposit">Dodaj Środki</a>
                             <a class="dropdown-item" asp-controller="DashBoard" asp-action="History">Historia Transakcji</a>
                         </div>
                     </li>
                 </ul>
             </div>
+            <div class="account container">
+                <ul>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Kontrachenci</a>
+                        <div class="dropdown-menu" style="">
+                            <a class="dropdown-item" asp-controller="Contractors" asp-action="Index">Kontrachenci</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="account container">
+                <ul>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Konta Bankowe</a>
+                        <div class="dropdown-menu" style="">
+                            <a class="dropdown-item" asp-controller="Accounts" asp-action="Index">Konta Bankowe</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+            
+
             <div>
                 <h4>Konta</h4>
                 <h5>(nazwa konta)</h5>

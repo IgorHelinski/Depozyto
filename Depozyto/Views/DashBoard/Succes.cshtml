@@ -1,9 +1,13 @@
-﻿<html>
+﻿@{
+    ViewData["Title"] = "Sukces!";
+}
+
+<html>
 <body>
     <div class="container">
         <center>
-            <h1>Wykonano Pomyślnie!</h1>
-            <button class="btn btn-secondary">
+            <bold><h1>Sukces!</h1></bold>
+            <button class="btn btn-success">
                 <a asp-controller="DashBoard" asp-action="Index">Powrót do Panelu Użytkownika</a>
             </button>
         </center>
