@@ -1,0 +1,17 @@
+﻿<html>
+<body>
+    <div class="container">
+        <center>
+            <h1>Jeżeli strona się nie załadowała</h1>
+            <h2><a asp-controller="DashBoard" asp-action="Index">kliknij tutaj</a></h2>
+        </center>
+    </div>
+    <script>
+        if (confirm("Czy napewno chcesz anulować transakcję?") == true) {
+            window.location="Index";
+        } else {
+            window.location="Transaction";
+        }
+    </script>
+</body>
+</html>
