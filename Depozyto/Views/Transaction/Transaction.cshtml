@@ -1,0 +1,26 @@
+﻿<html>
+<body>
+    <div class="container">
+        <center>
+            <div class="card text-white bg-secondary mb-4" style="max-width:450px;">
+                <div class="container card-body">
+                    <h5>Z konta:</h5>
+                    
+                    
+                    <h5>Kontrachent:</h5>
+                    <h5>tu wybierasz kontrachenta z listy</h5>
+                    
+                    <h5>Kwota</h5>
+                    <input type="number" placeholder="Kwota" id="cash" class="form-control" style="width:80%" /> <strong>PLN</strong>
+                    <h5>Tytułem</h5>
+                    <input type="text" placeholder="Przelew" id="transactiontittle" class="form-control" />
+                    <h5>Data</h5>
+                    <input type="date" id="transactiondate" class="form-control" />
+                </div>
+            </div>
+                <a class="btn btn-secondary" asp-controller="DashBoard" asp-action="Succes">Wykonaj</a>
+                <a class="btn btn-secondary" asp-controller="DashBoard" asp-action="Cancel">Anuluj</a>
+        </center>
+    </div>
+</body>
+</html>

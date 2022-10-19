@@ -1,1 +1,55 @@
-﻿<h1>tu dodajemy nowe konta bankowe</h1>
+﻿@model Depozyto.Models.AccountModel
+
+<center>
+	<h1>tu dodajemy nowe konta bankowe</h1>
+
+    <div class="card text-white bg-secondary mb-3" style="max-width: 500px;">
+
+        <div class="card-header"><h2>Zaloguj Się</h2></div>
+        <div class="card-body">
+            <div class="text-center" style="
+			width: 400px;
+			margin: auto;">
+
+                <form id="Login" asp-action="Add" asp-controller="Accounts" method="post">
+                    <fieldset>
+                        <div class="row align-items-center justify-content-center">
+                            <div class="form-group col-md-6">
+                                <label asp-for="num" class="control-label">Login</label>
+                                <input asp-for="num" class="form-control" placeholder="Login" type="text" />
+                                <span asp-validation-for="num" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <div class="row">
+                        <div class="form-group col-md-12 text-center mt-md-2">
+                            <input type="submit" value="Zaloguj" class="btn btn-primary" />
+                        </div>
+                    </div>
+
+                </form>
+
+                <a class="btn btn-danger" asp-controller="DashBoard" asp-action="Cancel">Anuluj</a>
+                
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</center>
+
+
+

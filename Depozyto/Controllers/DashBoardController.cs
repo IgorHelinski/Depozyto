@@ -3,11 +3,15 @@ using Depozyto.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Data.SqlClient;
 using System.Security.Claims;
+using System.Dynamic;
 
 namespace Depozyto.Controllers
 {
     public class DashBoardController : Controller
     {
+        
+
+
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
         SqlDataReader dr;
@@ -28,9 +32,11 @@ namespace Depozyto.Controllers
 
         //Dodawanie kaski
         [Authorize]
-        public IActionResult Deposit()
+        public IActionResult Deposit(IList<AccountModel> ac)
         {
-            return View();
+            
+
+            return View(ac);
         }
 
         [Authorize]
@@ -59,20 +65,6 @@ namespace Depozyto.Controllers
 
             con.Close();
             return View("Succes");
-        }
-
-
-       
-
-        //Zapłacenie kontrahentowi
-        [Authorize]
-        public IActionResult Transaction()
-        {
-            return View();
-        }
-        public IActionResult Zaplac()
-        {
-            return View();
         }
 
         //Sukces

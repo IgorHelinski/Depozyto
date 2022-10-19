@@ -1,1 +1,37 @@
-﻿<h1>tu dodajemy nowych kontrachentuw</h1>
+﻿@model Depozyto.Models.AddContractorsModel
+@{
+    ViewData["Title"] = "Dodaj Kontrahenta";
+}
+<html>
+<body>
+    <div class="container">
+        <center>
+            <div class="card card-secondary" style="max-width:500px">
+                <form id="AddContractor" asp-controller="Contractors" asp-action="CreateContractor" method="post">
+                    <fieldset>
+                        <center>
+                            <div class="mb-4" style="margin: 60px">
+                                <h3>Dodaj Kontrahenta</h3>
+                                <h5 style="margin: 6px">Imię Kontrahenta</h5>
+                                <input asp-for="Name" type="text" placeholder="Imię" id="Name" class="form-control" />
+                                <h5 style="margin: 6px">Nazwisko Kontrahenta</h5>
+                                <input asp-for="Surname" type="text" placeholder="Nazwisko" id="Surname" class="form-control" />
+                                <h5 style="margin: 6px">Numer Konta Kontrahenta</h5>
+                                <input asp-for="Accountnumber" type="text" placeholder="Numer Konta" id="Accountnumber" class="form-control" />
+                                <h5 style="margin: 6px">Email Kontrahenta</h5>
+                                <input asp-for="Email" type="text" placeholder="example@example.com" id="Email" class="form-control" />
+                            </div>
+                        </center>
+                    </fieldset>
+                    <div class="row">
+                        <div class="form-group col-md-12 text-center mt-md-4">
+                            <input type="submit" value="Dodaj Kontrahenta" class="btn btn-success" />
+                        </div>
+                    </div>
+                </form>
+
+                <a class="btn btn-danger" asp-controller="DashBoard" asp-action="Cancel" style="margin: 10px">Anuluj</a>
+        </center>
+    </div>
+</body>
+</html>

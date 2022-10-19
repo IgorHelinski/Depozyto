@@ -1,1 +1,58 @@
-﻿<h1>tu som kontrachenci</h1>
+﻿@model IEnumerable<Depozyto.Models.AddContractorsModel>
+
+<html>
+<body>
+    <div class="container">
+        <center><h1>Lista Kontrahentów</h1></center>
+        <a class="btn btn-primary" asp-controller="Contractors" asp-action="AddContractor">Dodaj Kontrahenta</a>
+
+        <table class="table">
+            <thead>
+                <tr>
+
+                    <th>
+                        <p>Imie</p>
+                    </th>
+                    <th>
+                        <p>Nazwisko</p>
+                    </th>
+                    <th>
+                        <p>Numer Konta</p>
+                    </th>
+                    <th>
+                        <p>Email</p>
+                    </th>
+                    <th>
+                        <p>Email przypisany do tego kontraktora</p>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>
+                            @item.Name
+                        </td>
+                        <td>
+                            @item.Surname
+                        </td>
+                        <td>
+                            @item.Accountnumber
+                        </td>
+                        <td>
+                            @item.Email
+                        </td>
+                        <td>
+                            @item.OwnerEmail
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</body>
+</html>
