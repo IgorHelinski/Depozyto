@@ -6,7 +6,7 @@ namespace Depozyto.Models
 	public class RegisterModel
 	{
         //Dane rejestracji
-
+        public string DePassword { get; set; }
 		public string Login { get; set; }
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }

@@ -1,11 +1,11 @@
 ﻿@model Depozyto.Models.AccountModel
 
 <center>
-	<h1>tu dodajemy nowe konta bankowe</h1>
+	
 
     <div class="card text-white bg-secondary mb-3" style="max-width: 500px;">
 
-        <div class="card-header"><h2>Zaloguj Się</h2></div>
+        <div class="card-header"><h2>Dodaj nowe konto</h2></div>
         <div class="card-body">
             <div class="text-center" style="
 			width: 400px;
@@ -15,8 +15,8 @@
                     <fieldset>
                         <div class="row align-items-center justify-content-center">
                             <div class="form-group col-md-6">
-                                <label asp-for="num" class="control-label">Login</label>
-                                <input asp-for="num" class="form-control" placeholder="Login" type="text" />
+                                <label asp-for="num" class="control-label">Numer konta</label>
+                                <input asp-for="num" class="form-control" placeholder="Numer Konta" type="text" />
                                 <span asp-validation-for="num" class="text-danger"></span>
                             </div>
                         </div>
@@ -24,12 +24,12 @@
 
                     <div class="row">
                         <div class="form-group col-md-12 text-center mt-md-2">
-                            <input type="submit" value="Zaloguj" class="btn btn-primary" />
+                            <input type="submit" value="Stwórz" class="btn btn-primary" />
                         </div>
                     </div>
 
                 </form>
-
+                <br />
                 <a class="btn btn-danger" asp-controller="DashBoard" asp-action="Cancel">Anuluj</a>
                 
 

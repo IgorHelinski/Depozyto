@@ -56,12 +56,13 @@ namespace Depozyto.Controllers
             }
             else
             {
-                return View();
+                return View(accounts);
             }
 
 
         }
-         
+
+        [Authorize]
         public IActionResult Deposit()
         {
             accounts.Clear();
@@ -96,6 +97,9 @@ namespace Depozyto.Controllers
             return View(accounts);
         }
 
+
+
+
         [Authorize]
         public IActionResult Wplata(AccountModel acc)
         {
@@ -112,17 +116,28 @@ namespace Depozyto.Controllers
                 b = Convert.ToSingle((double)dr["Money"]);
             }
             con.Close();
+
+            dupa(b, acc);
+
+            return RedirectToAction("Index", "Accounts", accounts);
+        }
+
+        public void dupa(float b, AccountModel acc)
+        {
             connectionString();
             con.Open();
             com.Connection = con;
+
             float amount = b + acc.kaska;
 
-            com.CommandText = "UPDATE Accounts SET money = '" + amount + "' WHERE ownerEmail = '" + User.FindFirst(ClaimTypes.Email).Value + "'AND num = '"+ acc.numer +"';";
-            com.ExecuteNonQueryAsync();
+            com.CommandText = "UPDATE Accounts SET money = '" + amount + "' WHERE ownerEmail = '" + User.FindFirst(ClaimTypes.Email).Value + "'AND num = '" + acc.numer + "';";
+            com.ExecuteNonQuery();
 
             con.Close();
-            return RedirectToAction("Index", "Accounts", accounts);
+            
         }
+
+        
 
         [Authorize]
         public IActionResult AddAccount()

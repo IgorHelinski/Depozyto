@@ -36,7 +36,22 @@ namespace Depozyto.Controllers
             con.ConnectionString = "Server=localhost\\SQLEXPRESS;Initial Catalog=epicDataBase;Persist Security Info=True;User ID=sa;Password=haslo";
         }
 
-
+        //ta funkcja szyfruje haslo
+        string Encode2PasswordToBase64(LoginModel log)
+        {
+            try
+            {
+                byte[] encData_byte = new byte[log.EnPassword.Length];
+                //tutaj monke psuje haslo i robi inne
+                encData_byte = System.Text.Encoding.UTF8.GetBytes(log.EnPassword);
+                log.Password = Convert.ToBase64String(encData_byte);
+                return log.Password;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in base64Encode" + ex.Message);
+            }
+        }
 
         //Logowanie
         public async Task<IActionResult> Index(LoginModel log, UserModel usr)
@@ -44,6 +59,7 @@ namespace Depozyto.Controllers
 
 
             //sprawdza czy w bazie danych jest taki urzytkownik
+            Encode2PasswordToBase64(log);
             connectionString();
             con.Open();
             com.Connection = con;
@@ -90,12 +106,27 @@ namespace Depozyto.Controllers
 
 
         }
-
         // Login/Register
         public ActionResult Register()
         {
 
             return View();
+        }
+        //ta funkcja szyfruje haslo
+        string EncodePasswordToBase64(RegisterModel reg)
+        {
+            try
+            {
+                byte[] encData_byte = new byte[reg.DePassword.Length];
+                //tutaj monke psuje haslo i robi inne
+                encData_byte = System.Text.Encoding.UTF8.GetBytes(reg.DePassword);
+                reg.Password = Convert.ToBase64String(encData_byte);
+                return reg.Password;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in base64Encode" + ex.Message);
+            }
         }
 
         //sprawdza czy mozemy zapisac uzytkownika w bazie danych (czy nie ma tos takiego loginu itp)
@@ -126,6 +157,7 @@ namespace Depozyto.Controllers
         public ActionResult CreateAccount(RegisterModel reg)
         {
             //sprawdzamy czy mozemy zarejestrowac nowego klienta
+            EncodePasswordToBase64(reg);
             CheckRegister(reg);
 
 

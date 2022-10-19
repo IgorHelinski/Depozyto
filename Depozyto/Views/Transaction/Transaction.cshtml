@@ -1,25 +1,36 @@
-﻿<html>
+﻿@model Depozyto.Models.TransactionModel
+
+<html>
 <body>
     <div class="container">
         <center>
+            <form id="Transaction" asp-action="Przelew" asp-controller="Transaction" method="post">
             <div class="card text-white bg-secondary mb-4" style="max-width:450px;">
                 <div class="container card-body">
-                    <h5>Z konta:</h5>
-                    
+                    <h5>Z konta:</h5>  
+                    @Html.DropDownList("Accounts",null,"Wybierz Konto", new{@class = "form-select", @name="account"})
                     
                     <h5>Kontrachent:</h5>
-                    <h5>tu wybierasz kontrachenta z listy</h5>
+                    @Html.DropDownList("Contractors",null,"Wybierz Kontrachenta", new{@class = "form-select", @name="contractor"})
                     
                     <h5>Kwota</h5>
-                    <input type="number" placeholder="Kwota" id="cash" class="form-control" style="width:80%" /> <strong>PLN</strong>
+                    <input type="number" name="cash" placeholder="Kwota" id="cash" class="form-control" style="width:100%" /> 
                     <h5>Tytułem</h5>
-                    <input type="text" placeholder="Przelew" id="transactiontittle" class="form-control" />
+                    <input type="text" name="title" placeholder="Przelew" id="transactiontittle" class="form-control" />
                     <h5>Data</h5>
-                    <input type="date" id="transactiondate" class="form-control" />
+                    <input type="date" name="date" id="transactiondate" class="form-control" />
                 </div>
             </div>
-                <a class="btn btn-secondary" asp-controller="DashBoard" asp-action="Succes">Wykonaj</a>
-                <a class="btn btn-secondary" asp-controller="DashBoard" asp-action="Cancel">Anuluj</a>
+
+                <div class="row">
+                    <div class="form-group col-md-12 text-center mt-md-2">
+                        <input type="submit" value="Przelej" class="btn btn-primary" />
+                    </div>
+                </div>
+
+            </form>
+                <br />
+                <a class="btn btn-danger" asp-controller="DashBoard" asp-action="Cancel">Anuluj</a>
         </center>
     </div>
 </body>
