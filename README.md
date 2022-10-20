@@ -5,6 +5,6 @@ https://www.youtube.com/watch?v=dQw4w9WgXcQ
 
 Dokumentacja FR:
 
-![StrukturaStrony](https://user-images.githubusercontent.com/70145364/195865242-d3589482-91fa-4948-8dda-217b1b6e4787.png)
+![StrukturaStrony](https://user-images.githubusercontent.com/70145364/196907155-2ec519c2-1d9c-438b-b20c-b324d9991c35.png)
 
 jak na razie tak to wyglonda tego typu
