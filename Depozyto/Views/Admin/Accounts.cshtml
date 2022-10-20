@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Depozyto.Models.AccountModel>
+
+@{
+    ViewData["Title"] = "ADMIN Konta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <center>
+        <h1>Konta</h1>
+    </center>
+
+    <table class="table">
+        <thead>
+            <tr>
+
+                <th>
+                    <p>Numer konta</p>
+                </th>
+                <th>
+                    <p>Ilość środków <bold>PLN</bold></p>
+                </th>
+                <th>
+                    <p>Email wlasciciela</p>
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>
+                        @item.num
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.money)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ownerEmail)
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

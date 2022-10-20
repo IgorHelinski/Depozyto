@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Data;
 using System.Data.SqlClient;
 using System.Security.Claims;
 
@@ -9,7 +10,10 @@ namespace Depozyto.Controllers
 {
     public class TransactionController : Controller
     {
-
+        public static IList<HistoryModel> history = new List<HistoryModel>()
+        {
+            //new AccountModel(){ num = "dfasj", money = "fjands", ownerEmail = "fdnjbask"}
+        };
 
 
         SqlConnection con = new SqlConnection();
@@ -45,6 +49,11 @@ namespace Depozyto.Controllers
             dr = com.ExecuteReader();
             if (dr.Read())
             {
+                accounts.Add(new SelectListItem
+                {
+                    Text = dr["num"].ToString(),
+
+                });
 
                 while (dr.Read())
                 {
@@ -75,6 +84,11 @@ namespace Depozyto.Controllers
             dr = com.ExecuteReader();
             if (dr.Read())
             {
+                contractors.Add(new SelectListItem
+                {
+                    Text = dr["Accountnumber"].ToString() + "," + dr["Email"].ToString()
+
+                });
 
                 while (dr.Read())
                 {
@@ -99,6 +113,7 @@ namespace Depozyto.Controllers
 
         }
 
+        [Authorize]
         public IActionResult Przelew(TransactionModel trans)
         {
             //kod do przesylania pieniendzy między kontami
@@ -160,7 +175,76 @@ namespace Depozyto.Controllers
             com.ExecuteNonQuery();
             con.Close();
 
-            return RedirectToAction("Succes", "Dashboard");
+            //tutaj zrobimy logi tranzakcji do histori
+
+            connectionString();
+            SqlCommand comm = new SqlCommand("SP_TransactionLog", con);
+            comm.CommandType = CommandType.StoredProcedure;
+            comm.Parameters.AddWithValue("@FromEmail", User.FindFirst(ClaimTypes.Email).Value);
+            comm.Parameters.AddWithValue("@ToEmail", email);
+            comm.Parameters.AddWithValue("@Amount", trans.cash);
+            comm.Parameters.AddWithValue("@Title", trans.title);
+            comm.Parameters.AddWithValue("@Date", trans.date);
+            con.Open();
+            int i = comm.ExecuteNonQuery();
+            con.Close();
+            if (i >= 1)
+            {
+                //Success
+                return RedirectToAction("Succes", "Dashboard");
+            }
+            else
+            {
+                //Failed
+                return RedirectToAction("Transaction", "Transaction");
+            }
+        }
+
+        [Authorize]
+        public IActionResult History()
+        {
+            history.Clear();
+
+            //get all users accounts and put them in list
+            connectionString();
+            con.Open();
+            com.Connection = con;
+            com.CommandText = "select * from dbo.TransactionLogs where FromEmail='" + User.FindFirst(ClaimTypes.Email).Value + "'or ToEmail = '"+ User.FindFirst(ClaimTypes.Email).Value + "';";
+            dr = com.ExecuteReader();
+            if (dr.Read())
+            {
+
+                history.Add(new HistoryModel
+                {
+                    FromEmail = dr["FromEmail"].ToString(),
+                    ToEmail = dr["ToEmail"].ToString(),
+                    Amount = dr["Amount"].ToString(),
+                    Title = dr["Title"].ToString(),
+                    Date = dr["Date"].ToString()
+                });
+
+                while (dr.Read())
+                {
+
+                    history.Add(new HistoryModel
+                    {
+                        FromEmail = dr["FromEmail"].ToString(),
+                        ToEmail = dr["ToEmail"].ToString(),
+                        Amount = dr["Amount"].ToString(),
+                        Title = dr["Title"].ToString(),
+                        Date = dr["Date"].ToString()
+                    });
+                }
+
+
+                con.Close();
+                return View(history);
+            }
+            else
+            {
+                return View(history);
+            }
+
         }
 
     }

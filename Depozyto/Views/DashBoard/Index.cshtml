@@ -11,8 +11,7 @@
                             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Transakcje</a>
                         <div class="dropdown-menu" style="">
                             <a class="dropdown-item" asp-controller="Transaction" asp-action="Transaction">Wykonaj Transakje</a>
-                            <a class="dropdown-item" asp-controller="Accounts" asp-action="Deposit">Dodaj Środki</a>
-                            <a class="dropdown-item" asp-controller="DashBoard" asp-action="History">Historia Transakcji</a>
+                            <a class="dropdown-item" asp-controller="Transaction" asp-action="History">Historia Transakcji</a>
                         </div>
                     </li>
                 </ul>
@@ -33,87 +32,27 @@
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Konta Bankowe</a>
                         <div class="dropdown-menu" style="">
                             <a class="dropdown-item" asp-controller="Accounts" asp-action="Index">Konta Bankowe</a>
+                            <a class="dropdown-item" asp-controller="Accounts" asp-action="Deposit">Dodaj Środki</a>
                         </div>
                     </li>
                 </ul>
             </div>
         </div>
 
-            
+        <div>
+            <h3>Konta</h3>
 
-            <div>
-                <h4>Konta</h4>
-                <h5>(nazwa konta)</h5>
-                <img src="~/Images/dopasowana_VISA_420x250.webp" alt="Przykładowa Karta Debetowa" width="315" height="187" />
-                <div class="Wallet card" style="width: 50%">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Dostępne środki</th>
-                                <th>cos tam</th>
-                                <th>jeszcze co innego</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr class="table-wallet">
-                                <td>(dostepne srodki)  PLN</td>
-                                <td>małpa</td>
-                                <td>Lorem  ezzafdsdfsdfs</td>
-                            </tr>
-                            <tr class="table-wallet">
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="history card mb-1" style="width: 50%; max-height: 500px">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>&nbsp;</th>
-                            <th>Historia Transakcji</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>10.69</td>
-                            <td>PLN</td>
-                            <td><strong>10.06.2022</strong></td>
-                            <td>Igipigiel</td>
-                        </tr>
-                        <tr>
-                            <td>420.00</td>
-                            <td>PLN</td>
-                            <td><strong>10.10.2022</strong></td>
-                            <td>Seba</td>
-                        </tr>
-                        <tr>
-                            <td>2137.00</td>
-                            <td>PLN</td>
-                            <td><strong>01.04.2005</strong></td>
-                            <td>Paweł</td>
-                        </tr>
-                        <tr>
-                            <td>6.00</td>
-                            <td>PLN</td>
-                            <td><strong>24.08.2022</strong></td>
-                            <td>Grażyna</td>
-                        </tr>
-                        <tr>
-                            <td>2115.69</td>
-                            <td>PLN</td>
-                            <td><strong>10.10.2022</strong></td>
-                            <td>Borys</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+
+
+
+        </div>
+        <div>
+            <h3>Historia ostatnich tranzakcji</h3>
+
+
+
+        </div>
+    
     </div>
 </body>
 </html>

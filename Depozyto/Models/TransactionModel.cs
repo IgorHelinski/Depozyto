@@ -6,6 +6,6 @@
         public string Contractors { get; set; }
         public int cash { get; set; }
         public string title { get; set; }
-        
+        public string date { get; set;}
     }
 }

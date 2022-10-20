@@ -13,6 +13,7 @@
         public bool Active { get; set; }
         public bool Blocked { get; set; }
         public float Money { get; set; }
+        public string Role { get; set; }
 
     }
 }

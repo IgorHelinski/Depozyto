@@ -34,7 +34,16 @@ namespace Depozyto.Controllers
             com.CommandText = "select * from dbo.Contractors where ownerEmail='" + User.FindFirst(ClaimTypes.Email).Value + "';";
             dr = com.ExecuteReader();
             if (dr.Read())
-            { 
+            {
+
+                contractors.Add(new AddContractorsModel
+                {
+                    Name = dr["Name"].ToString(),
+                    Surname = dr["Surname"].ToString(),
+                    Accountnumber = dr["Accountnumber"].ToString(),
+                    Email = dr["Email"].ToString(),
+                    OwnerEmail = dr["ownerEmail"].ToString()
+                });
 
                 while (dr.Read())
                 {

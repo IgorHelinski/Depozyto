@@ -72,6 +72,7 @@ namespace Depozyto.Controllers
                 usr.Name = dr["Imie"].ToString();
                 usr.LastName = dr["Nazwisko"].ToString();
                 usr.Email = dr["Email"].ToString();
+                usr.Role = dr["Role"].ToString();
 
                 con.Close();
                 //znalazl urzytkownika
@@ -83,7 +84,8 @@ namespace Depozyto.Controllers
                 {
                     new Claim(ClaimTypes.Email,usr.Email),
                     new Claim(ClaimTypes.Name,usr.Name),
-                    new Claim(ClaimTypes.Surname,usr.LastName)
+                    new Claim(ClaimTypes.Surname,usr.LastName),
+                    new Claim(ClaimTypes.Role,usr.Role)
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -171,6 +173,7 @@ namespace Depozyto.Controllers
                 com.Parameters.AddWithValue("@Imie", reg.Name);
                 com.Parameters.AddWithValue("@Nazwisko", reg.LastName);
                 com.Parameters.AddWithValue("@Email", reg.Email);
+                com.Parameters.AddWithValue("@Role", "User");
                 con.Open();
                 int i = com.ExecuteNonQuery();
                 con.Close();

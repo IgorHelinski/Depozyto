@@ -18,7 +18,7 @@
 					<fieldset>
 						<div class="row align-items-center justify-content-center">
 							<div class="form-group col-md-6">
-								<label asp-for="Login" class="control-label"></label>
+								<label asp-for="Login" class="control-label">Login</label>
 								<input asp-for="Login" class="form-control" placeholder="Login" type="text" />
 								<span asp-validation-for="Login" class="text-danger"></span>
 								@if (ViewData["LoginDouble"] != null)
@@ -33,7 +33,7 @@
 						<br />
 						<div class="row align-items-center justify-content-center">
 							<div class="form-group col-md-6">
-								<label asp-for="DePassword" class="control-label"></label>
+								<label asp-for="DePassword" class="control-label">Hasło</label>
 								<input asp-for="DePassword" class="form-control" placeholder="Hasło" type="password" />
 								<span asp-validation-for="DePassword" class="text-danger"></span>
 							</div>
@@ -41,7 +41,7 @@
 						<br />
 						<div class="row align-items-center justify-content-center">
 							<div class="form-group col-md-6">
-								<label asp-for="ConfirmPassword" class="control-label"></label>
+								<label asp-for="ConfirmPassword" class="control-label">Potwierdź Hasło</label>
 								<input asp-for="ConfirmPassword" class="form-control" placeholder="Potwierdź Hasło" type="password" />
 								<span asp-validation-for="ConfirmPassword" class="text-danger"></span>
 							</div>
@@ -49,7 +49,7 @@
 						<br />
 						<div class="row align-items-center justify-content-center">
 							<div class="form-group col-md-6">
-								<label asp-for="Name" class="control-label"></label>
+								<label asp-for="Name" class="control-label">Imię</label>
 								<input asp-for="Name" class="form-control" placeholder="Imię" type="text" />
 								<span asp-validation-for="Name" class="text-danger"></span>
 							</div>
@@ -57,7 +57,7 @@
 						<br />
 						<div class="row align-items-center justify-content-center">
 							<div class="form-group col-md-6">
-								<label asp-for="LastName" class="control-label"></label>
+								<label asp-for="LastName" class="control-label">Nazwisko</label>
 								<input asp-for="LastName" class="form-control" placeholder="Nazwisko" type="text" />
 								<span asp-validation-for="LastName" class="text-danger"></span>
 							</div>
@@ -65,15 +65,22 @@
 						<br />
 						<div class="row align-items-center justify-content-center">
 							<div class="form-group col-md-6">
-								<label asp-for="Email" class="control-label"></label>
+								<label asp-for="Email" class="control-label">Email</label>
 								<input asp-for="Email" class="form-control" placeholder="Email" type="text" />
 								<span asp-validation-for="Email" class="text-danger"></span>
 							</div>
 						</div>
-
 					</fieldset>
+					<br />
+					<div><center>
+                            <title>reCAPTCHA demo: Simple page</title>
+                            <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+                            <div class="g-recaptcha" data-sitekey="6Le5PpciAAAAAFl7neMYVrOpaSpvP2PySzCnfKt2"></div>
+                            <br/>
+                    </center></div>
+
 					<div class="row">
-						<div class="form-group col-md-12 text-center mt-md-4">
+						<div class="form-group col-md-12 text-center mt-md-1">
 							<input type="submit" value="Stwórz konto" class="btn btn-success" />
 						</div>
 					</div>

@@ -12,9 +12,7 @@ namespace Depozyto.Controllers
         public static IList<AccountModel> accounts = new List<AccountModel>()
         {
             //new AccountModel(){ num = "dfasj", money = "fjands", ownerEmail = "fdnjbask"}
-
         };
-
 
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
@@ -38,6 +36,13 @@ namespace Depozyto.Controllers
             dr = com.ExecuteReader();
             if (dr.Read())
             {
+
+                accounts.Add(new AccountModel
+                {
+                    num = dr["num"].ToString(),
+                    money = dr["money"].ToString(),
+                    ownerEmail = dr["ownerEmail"].ToString()
+                });
 
                 while (dr.Read())
                 {
@@ -76,6 +81,13 @@ namespace Depozyto.Controllers
             dr = com.ExecuteReader();
             if (dr.Read())
             {
+
+                accounts.Add(new AccountModel
+                {
+                    num = dr["num"].ToString(),
+                    money = dr["money"].ToString(),
+                    ownerEmail = dr["ownerEmail"].ToString()
+                });
 
                 while (dr.Read())
                 {

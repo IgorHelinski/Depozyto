@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Depozyto.Models.HistoryModel>
+
+@{
+    ViewData["Title"] = "ADMIN Historia";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <center>
+        <h1>Historia Tranzakcji</h1>
+    </center>
+
+    <table class="table">
+        <thead>
+            <tr>
+
+                <th>
+                    <p>Nadawca płatności</p>
+                </th>
+                <th>
+                    <p>Adresat płatności</p>
+                </th>
+                <th>
+                    <p>Kwota w <bold>PLN</bold></p>
+                </th>
+                <th>
+                    <p>Tytuł</p>
+                </th>
+                <th>
+                    <p>Data</p>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>
+                        @item.FromEmail
+                    </td>
+                    <td>
+                        @item.ToEmail
+                    </td>
+                    <td>
+                        @item.Amount
+                    </td>
+                    <td>
+                        @item.Title
+                    </td>
+                    <td>
+                        @item.Date
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
