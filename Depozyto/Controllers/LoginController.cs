@@ -74,7 +74,7 @@ namespace Depozyto.Controllers
                 usr.Email = dr["Email"].ToString();
                 usr.Role = dr["Role"].ToString();
 
-                con.Close();
+                
                 //znalazl urzytkownika
 
                 log.loggedIn = true;
@@ -92,7 +92,15 @@ namespace Depozyto.Controllers
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new System.Security.Claims.ClaimsPrincipal(claimsIdentity));
 
+                if (dr["Blocked"].ToString() == "True")
+                {
+                    con.Close();
+                    Response.Cookies.Delete("sesja");
+                    ViewData["UserBlocked"] = "Użytkownik został zablokowany";
+                    return View();
+                }
 
+                con.Close();
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -138,7 +146,7 @@ namespace Depozyto.Controllers
             connectionString();
             con.Open();
             com.Connection = con;
-            com.CommandText = "select * from dbo.Clients where Login='" + reg.Login + "'";
+            com.CommandText = "select * from dbo.Clients where Login='" + reg.Login + "' or Email ='"+ reg.Email+"'";
             dr = com.ExecuteReader();
             if (dr.Read())
             {
@@ -191,7 +199,7 @@ namespace Depozyto.Controllers
             else
             {
                 //nie moze zarejestrowac
-                ViewData["LoginDouble"] = "Login jest już zajęty przez innego urzytkownika";
+                ViewData["LoginDouble"] = "Login lub Email jest już zajęty przez innego użytkownika";
                 return View("Register");
             }
 

@@ -20,7 +20,7 @@
                             <div class="form-group col-md-6">
                                 <label asp-for="Login" class="control-label">Login</label>
                                 <input asp-for="Login" class="form-control" placeholder="Login" type="text"/>
-                                <span asp-validation-for="Login" class="text-danger"></span>
+                                <span asp-validation-for="Login" class="text-danger">   </span>
                             </div>
                         </div>
                         <br />
@@ -28,7 +28,7 @@
                             <div class="form-group col-md-6">
                                 <label asp-for="EnPassword" class="control-label">Hasło</label>
                                 <input asp-for="EnPassword" class="form-control" placeholder="Hasło" type="password"/>
-                                <span asp-validation-for="EnPassword" class="text-danger"></span>
+                                <span asp-validation-for="EnPassword" class="text-danger">   </span>
                             </div>
                         </div>
                     </fieldset>
@@ -43,9 +43,19 @@
                         }
                     </div>
 
+                    <div>
+                        @if (ViewData["UserBlocked"] != null)
+                        {
+                            <br />
+                            <center>
+                                <h5>Użytkownik Został Zablokowany</h5>
+                            </center>
+                        }
+                    </div>
+
                     <div class="row">
                         <div class="form-group col-md-12 text-center mt-md-2">
-                            <input type="submit" value="Zaloguj" class="btn btn-primary" />
+                            <input type="submit" value="Zaloguj" class="btn btn-success" />
                         </div>
                     </div>
                     
@@ -54,7 +64,7 @@
                 <br />
 
                 
-                    <a class="btn btn-info" asp-action="Register">Stwórz konto tutaj!!</a>
+                    <a class="btn btn-primary" asp-action="Register">Stwórz konto tutaj!!</a>
                 
                 
 			</div>

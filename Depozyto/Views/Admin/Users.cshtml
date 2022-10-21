@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Depozyto.Models.UserModel>
+
+@{
+    ViewData["Title"] = "ADMIN Użytkownicy";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <center>
+        <h1>Urzytkownicy</h1>
+    </center>
+
+    <table class="table">
+        <thead>
+            <tr>
+
+                <th>
+                    <p>Login</p>
+                </th>
+                <th>
+                    <p>Hasło</p>
+                </th>
+                <th>
+                    <p>Imię</p>
+                </th>
+                <th>
+                    <p>Nazwisko</p>
+                </th>
+                <th>
+                    <p>Email</p>
+                </th>
+                <th>
+                    <p>Zablokowany</p>
+                </th>
+                <th>
+                    <p>Rola</p>
+                </th>
+                <th>
+                    <p>Ustawienia</p>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>
+                        @item.Login
+                    </td>
+                    <td>
+                        @item.Password
+                    </td>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.LastName
+                    </td>
+                    <td>
+                        @item.Email
+                    </td>
+                    <td>
+                        @item.Blocked
+                    </td>
+                    <td>
+                        @item.Role
+                    </td>
+                    <td>
+                        @Html.ActionLink("Zmień Role", "ChangeRole", new {  id=item.Email  })
+                        @Html.ActionLink("Zablokuj", "DeleteUser", new {  id=item.Email  })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

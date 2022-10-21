@@ -11,7 +11,7 @@
         public string LastName { get; set; }
         public string Email { get; set; }
         public bool Active { get; set; }
-        public bool Blocked { get; set; }
+        public string Blocked { get; set; }
         public float Money { get; set; }
         public string Role { get; set; }
 

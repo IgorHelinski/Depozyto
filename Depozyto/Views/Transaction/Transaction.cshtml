@@ -7,11 +7,24 @@
             <form id="Transaction" asp-action="Przelew" asp-controller="Transaction" method="post">
             <div class="card text-white bg-secondary mb-4" style="max-width:450px;">
                 <div class="container card-body">
-                    <h5>Z konta:</h5>  
-                    @Html.DropDownList("Accounts",null,"Wybierz Konto", new{@class = "form-select", @name="account"})
+                    @if(Html.DropDownList("Accounts") == null)
+                    {
+                        <h1>Nie masz żadnych kont</h1>
+                    }else{
+                            <h5>Z konta:</h5>
+                            @Html.DropDownList("Accounts",null,"Wybierz Konto", new{@class = "form-select", @name="account"})
+                    }
                     
-                    <h5>Kontrachent:</h5>
-                    @Html.DropDownList("Contractors",null,"Wybierz Kontrachenta", new{@class = "form-select", @name="contractor"})
+                    @if (Html.DropDownList("Contractors") == null)
+                    { 
+                        <h1>Nie masz żadnych kontrachentów</h1>
+
+                    }else
+                    {
+                       <h5>Kontrachent:</h5>
+                       @Html.DropDownList("Contractors",null,"Wybierz Kontrachenta", new{@class = "form-select", @name="contractor"})
+                    }
+                    
                     
                     <h5>Kwota</h5>
                     <input type="number" name="cash" placeholder="Kwota" id="cash" class="form-control" style="width:100%" /> 
@@ -24,7 +37,7 @@
 
                 <div class="row">
                     <div class="form-group col-md-12 text-center mt-md-2">
-                        <input type="submit" value="Przelej" class="btn btn-primary" />
+                        <input type="submit" value="Przelej" class="btn btn-success" />
                     </div>
                 </div>
 

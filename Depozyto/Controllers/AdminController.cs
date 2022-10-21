@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
+using System.Diagnostics;
+using System.Runtime.Intrinsics.Arm;
 using System.Security.Claims;
 
 namespace Depozyto.Controllers
@@ -16,8 +18,12 @@ namespace Depozyto.Controllers
         {
             //new AccountModel(){ num = "dfasj", money = "fjands", ownerEmail = "fdnjbask"}
         };
-       
+        public static IList<UserModel> users = new List<UserModel>()
+        {
+            //new AccountModel(){ num = "dfasj", money = "fjands", ownerEmail = "fdnjbask"}
+        };
 
+        
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
         SqlDataReader dr;
@@ -36,8 +42,96 @@ namespace Depozyto.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Users()
         {
-           return View();
+            users.Clear();
+
+            connectionString();
+            con.Open();
+            com.Connection = con;
+            com.CommandText = "select * from dbo.Clients;";
+            dr = com.ExecuteReader();
+            if (dr.Read())
+            {
+
+                users.Add(new UserModel
+                {
+                    Login = dr["Login"].ToString(),
+                    Password = dr["Haslo"].ToString(),
+                    Name = dr["Imie"].ToString(),
+                    LastName = dr["Nazwisko"].ToString(),
+                    Email = dr["Email"].ToString(),
+                    Blocked = dr["Blocked"].ToString(),
+                    Role = dr["Role"].ToString()
+                });
+
+                while (dr.Read())
+                {
+
+                    users.Add(new UserModel
+                    {
+                        Login = dr["Login"].ToString(),
+                        Password = dr["Haslo"].ToString(),
+                        Name = dr["Imie"].ToString(),
+                        LastName = dr["Nazwisko"].ToString(),
+                        Email = dr["Email"].ToString(),
+                        Blocked = dr["Blocked"].ToString(),
+                        Role = dr["Role"].ToString()
+                    });
+                }
+
+                con.Close();
+                return View(users);
+
+            }
+            else
+            {
+                return View(users);
+            }
+            
         }
+
+        public IActionResult ChangeRole(string id)
+        {
+            TempData["Route"] = id;
+            return View();
+        }
+
+        public IActionResult Change(AdminModel adm)
+        {
+            string changeEmail;
+            changeEmail = TempData["Route"].ToString();
+            
+            connectionString();
+            con.Open();
+            com.Connection = con;
+
+            com.CommandText = "UPDATE Clients SET Role = '" + adm.role + "' WHERE Email = '" + changeEmail + "';";
+            com.ExecuteNonQuery();
+            con.Close();
+
+            return RedirectToAction("Index", "Admin");
+        }
+
+        public IActionResult DeleteUser(string id)
+        {
+            TempData["DeleteUserId"] = id;
+            return View();
+        }
+        public IActionResult Delete()
+        {
+            string deleteId;
+            deleteId = TempData["DeleteUserId"].ToString();
+
+            connectionString();
+            con.Open();
+            com.Connection = con;
+
+            com.CommandText = "UPDATE Clients SET Blocked = '" + true + "' WHERE Email = '" + deleteId + "';";
+            com.ExecuteNonQuery();
+            con.Close();
+
+            return RedirectToAction("Index", "Admin");
+        }
+
 
         [Authorize(Roles = "Admin")]
         public IActionResult Accounts()

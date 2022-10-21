@@ -1,43 +1,12 @@
-﻿@{
+﻿@model IEnumerable<Depozyto.Models.HistoryModel>
+@{
     ViewData["Title"] = "Dashboard";
 }
 <html>
 <body>
     <div class="container">
         <div>
-            <div class="account container">
-                <ul>
-                    <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Transakcje</a>
-                        <div class="dropdown-menu" style="">
-                            <a class="dropdown-item" asp-controller="Transaction" asp-action="Transaction">Wykonaj Transakje</a>
-                            <a class="dropdown-item" asp-controller="Transaction" asp-action="History">Historia Transakcji</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="account container">
-                <ul>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Kontrachenci</a>
-                        <div class="dropdown-menu" style="">
-                            <a class="dropdown-item" asp-controller="Contractors" asp-action="Index">Kontrachenci</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="account container">
-                <ul>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Konta Bankowe</a>
-                        <div class="dropdown-menu" style="">
-                            <a class="dropdown-item" asp-controller="Accounts" asp-action="Index">Konta Bankowe</a>
-                            <a class="dropdown-item" asp-controller="Accounts" asp-action="Deposit">Dodaj Środki</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
+            
 
         <div>
             <h3>Konta</h3>
@@ -48,7 +17,51 @@
         </div>
         <div>
             <h3>Historia ostatnich tranzakcji</h3>
+            <table class="table">
+                <thead>
+                    <tr>
 
+                        <th>
+                            <p>Nadawca płatności</p>
+                        </th>
+                        <th>
+                            <p>Adresat płatności</p>
+                        </th>
+                        <th>
+                            <p>Kwota w <bold>PLN</bold></p>
+                        </th>
+                        <th>
+                            <p>Tytuł</p>
+                        </th>
+                        <th>
+                            <p>Data</p>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                @item.FromEmail
+                            </td>
+                            <td>
+                                @item.ToEmail
+                            </td>
+                            <td>
+                                @item.Amount
+                            </td>
+                            <td>
+                                @item.Title
+                            </td>
+                            <td>
+                                @item.Date
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
 
 
         </div>

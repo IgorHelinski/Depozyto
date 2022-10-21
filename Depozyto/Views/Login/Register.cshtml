@@ -16,18 +16,21 @@
 
 				<form id="Register" asp-action="CreateAccount" asp-controller="Login" method="post">
 					<fieldset>
+
+						@if (ViewData["LoginDouble"] != null)
+						{
+							<br />
+							<center>
+								<h5>Login lub Email jest już zajęty</h5>
+							</center>
+						}
+
 						<div class="row align-items-center justify-content-center">
 							<div class="form-group col-md-6">
 								<label asp-for="Login" class="control-label">Login</label>
 								<input asp-for="Login" class="form-control" placeholder="Login" type="text" />
 								<span asp-validation-for="Login" class="text-danger"></span>
-								@if (ViewData["LoginDouble"] != null)
-								{
-									<br />
-									<center>
-										<h5>Login jest już zajęty</h5>
-									</center>
-								}
+								
 							</div>
 						</div>
 						<br />
@@ -75,13 +78,16 @@
 					<div><center>
                             <title>reCAPTCHA demo: Simple page</title>
                             <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-                            <div class="g-recaptcha" data-sitekey="6Le5PpciAAAAAFl7neMYVrOpaSpvP2PySzCnfKt2"></div>
+                            <div class="g-recaptcha" data-sitekey="6Le5PpciAAAAAFl7neMYVrOpaSpvP2PySzCnfKt2" data-callback="recaptcha_callback"></div>
                             <br/>
                     </center></div>
 
+					
+
+
 					<div class="row">
 						<div class="form-group col-md-12 text-center mt-md-1">
-							<input type="submit" value="Stwórz konto" class="btn btn-success" />
+							<input id="makeit" type="submit" value="Stwórz konto" class="btn btn-success" disabled/>
 						</div>
 					</div>
 				</form>
@@ -90,3 +96,17 @@
 		</div>
 	</div>
 </center>
+
+<script>
+	function recaptcha_callback() {
+		var makeit = document.querySelector('#makeit');
+		makeit.removeAttribute('disabled');
+		makeit.style.cursor = 'pointer';
+	}
+</script>
+
+<style>
+    #makeit{
+        cursor: not-allowed;
+    }
+</style>

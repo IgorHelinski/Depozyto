@@ -73,8 +73,9 @@ namespace Depozyto.Controllers
             }
             else
             {
-                //failure
-                return View();
+                con.Close();
+                ViewBag.Accounts = accounts;
+                
             }
 
             connectionString();
@@ -107,6 +108,8 @@ namespace Depozyto.Controllers
             }
             else
             {
+                con.Close();
+                ViewBag.Contractors = contractors;
                 return View();
             }
 

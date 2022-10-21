@@ -9,8 +9,10 @@ namespace Depozyto.Controllers
 {
     public class DashBoardController : Controller
     {
-        
-
+        public static IList<HistoryModel> history = new List<HistoryModel>()
+        {
+            //new AccountModel(){ num = "dfasj", money = "fjands", ownerEmail = "fdnjbask"}
+        };
 
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
@@ -25,7 +27,51 @@ namespace Depozyto.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            return View("Index");
+            history.Clear();
+
+            //get all users accounts and put them in list
+            connectionString();
+            con.Open();
+            com.Connection = con;
+            com.CommandText = "select * from dbo.TransactionLogs where FromEmail='" + User.FindFirst(ClaimTypes.Email).Value + "'or ToEmail = '" + User.FindFirst(ClaimTypes.Email).Value + "';";
+            dr = com.ExecuteReader();
+            if (dr.Read())
+            {
+
+                history.Add(new HistoryModel
+                {
+                    FromEmail = dr["FromEmail"].ToString(),
+                    ToEmail = dr["ToEmail"].ToString(),
+                    Amount = dr["Amount"].ToString(),
+                    Title = dr["Title"].ToString(),
+                    Date = dr["Date"].ToString()
+                });
+
+                while (dr.Read())
+                {
+
+                    history.Add(new HistoryModel
+                    {
+                        FromEmail = dr["FromEmail"].ToString(),
+                        ToEmail = dr["ToEmail"].ToString(),
+                        Amount = dr["Amount"].ToString(),
+                        Title = dr["Title"].ToString(),
+                        Date = dr["Date"].ToString()
+                    });
+                }
+
+
+                con.Close();
+                return View(history);
+            }
+            else
+            {
+                return View(history);
+            }
+
+
+
+
         }
 
 
