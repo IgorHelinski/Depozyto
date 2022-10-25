@@ -18,19 +18,27 @@ namespace Depozyto.Controllers
 
         public IActionResult Index()
         {
+            //throw new Exception();
             return View();
         }
 
-        [Authorize]
+        [AllowAnonymous]
         public IActionResult Privacy()
         {
             return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Error(int statuscode)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            if(statuscode == 404)
+            {
+                return View("Error404");
+            }
+            else
+            {
+                return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            }
         }
 
         [AllowAnonymous]

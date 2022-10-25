@@ -22,15 +22,19 @@ namespace Depozyto.Controllers
         {
             //new AccountModel(){ num = "dfasj", money = "fjands", ownerEmail = "fdnjbask"}
         };
-
         
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
         SqlDataReader dr;
+        private IConfiguration Configuration;
+        public AdminController(IConfiguration _configuration)
+        {
+            Configuration = _configuration;
+        }
+
         void connectionString()
         {
-            //połączenia serwera
-            con.ConnectionString = "Server=localhost\\SQLEXPRESS;Initial Catalog=epicDataBase;Persist Security Info=True;User ID=sa;Password=haslo";
+            con.ConnectionString = this.Configuration.GetConnectionString("ConString");
         }
 
         [Authorize(Roles ="Admin")]
@@ -42,7 +46,19 @@ namespace Depozyto.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Users()
         {
+            string sample = "True";
+            bool bruh;
+
             users.Clear();
+
+            if (dr["Blocked"].ToString() == sample)
+            {
+                bruh = true;
+            }
+            else
+            {
+                bruh = false;
+            }
 
             connectionString();
             con.Open();
@@ -59,7 +75,7 @@ namespace Depozyto.Controllers
                     Name = dr["Imie"].ToString(),
                     LastName = dr["Nazwisko"].ToString(),
                     Email = dr["Email"].ToString(),
-                    Blocked = dr["Blocked"].ToString(),
+                    Blocked = bruh,
                     Role = dr["Role"].ToString()
                 });
 
@@ -73,7 +89,7 @@ namespace Depozyto.Controllers
                         Name = dr["Imie"].ToString(),
                         LastName = dr["Nazwisko"].ToString(),
                         Email = dr["Email"].ToString(),
-                        Blocked = dr["Blocked"].ToString(),
+                        Blocked = bruh,
                         Role = dr["Role"].ToString()
                     });
                 }
@@ -195,8 +211,10 @@ namespace Depozyto.Controllers
                     ToEmail = dr["ToEmail"].ToString(),
                     Amount = dr["Amount"].ToString(),
                     Title = dr["Title"].ToString(),
-                    Date = dr["Date"].ToString()
-                });
+                    Date = dr["Date"].ToString(),
+                    FromAccountId = Convert.ToInt32(dr["FromAccountId"]),
+                    ToAccountId = Convert.ToInt32(dr["ToAccountId"])
+                }) ;
 
                 while (dr.Read())
                 {
@@ -207,7 +225,9 @@ namespace Depozyto.Controllers
                         ToEmail = dr["ToEmail"].ToString(),
                         Amount = dr["Amount"].ToString(),
                         Title = dr["Title"].ToString(),
-                        Date = dr["Date"].ToString()
+                        Date = dr["Date"].ToString(),
+                        FromAccountId = Convert.ToInt32(dr["FromAccountId"]),
+                        ToAccountId = Convert.ToInt32(dr["ToAccountId"])
                     });
                 }
 

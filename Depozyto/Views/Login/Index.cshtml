@@ -26,9 +26,9 @@
                         <br />
                         <div class="row align-items-center justify-content-center">
                             <div class="form-group col-md-6">
-                                <label asp-for="EnPassword" class="control-label">Hasło</label>
-                                <input asp-for="EnPassword" class="form-control" placeholder="Hasło" type="password"/>
-                                <span asp-validation-for="EnPassword" class="text-danger">   </span>
+                                <label asp-for="Password" class="control-label">Hasło</label>
+                                <input asp-for="Password" class="form-control" placeholder="Hasło" type="password"/>
+                                <span asp-validation-for="Password" class="text-danger">   </span>
                             </div>
                         </div>
                     </fieldset>
@@ -64,7 +64,7 @@
                 <br />
 
                 
-                    <a class="btn btn-primary" asp-action="Register">Stwórz konto tutaj!!</a>
+                    <a class="btn btn-primary" asp-controller="Register" asp-action="Register">Stwórz konto tutaj!!</a>
                 
                 
 			</div>

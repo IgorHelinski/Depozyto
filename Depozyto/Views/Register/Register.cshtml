@@ -3,8 +3,6 @@
 	ViewData["Title"] = "Strona Rejestrowania";
 }
 
-
-
 <center>
 	<div class="card text-white bg-secondary mb-3" style="max-width: 500px;">
 
@@ -14,7 +12,7 @@
 			width: 400px;
 			margin: auto;">
 
-				<form id="Register" asp-action="CreateAccount" asp-controller="Login" method="post">
+				<form id="Register" asp-action="CreateAccount" asp-controller="Register" method="post">
 					<fieldset>
 
 						@if (ViewData["LoginDouble"] != null)
@@ -36,9 +34,9 @@
 						<br />
 						<div class="row align-items-center justify-content-center">
 							<div class="form-group col-md-6">
-								<label asp-for="DePassword" class="control-label">Hasło</label>
-								<input asp-for="DePassword" class="form-control" placeholder="Hasło" type="password" />
-								<span asp-validation-for="DePassword" class="text-danger"></span>
+								<label asp-for="Password" class="control-label">Hasło</label>
+								<input asp-for="Password" class="form-control" placeholder="Hasło" type="password" />
+								<span asp-validation-for="Password" class="text-danger"></span>
 							</div>
 						</div>
 						<br />

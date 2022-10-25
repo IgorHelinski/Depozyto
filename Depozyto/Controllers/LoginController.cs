@@ -16,50 +16,45 @@ namespace Depozyto.Controllers
         SqlCommand com = new SqlCommand();
         SqlDataReader dr;
 
-        bool canRegister;
-
-        // Login
-        [HttpGet]
-        public IActionResult Index(UserModel usr)
+        private IConfiguration Configuration;
+        public LoginController(IConfiguration _configuration)
         {
-            if (usr.loggedIn)
-            {
-                ViewData["LoggedIn"] = "Zalogowano";
-            }
-            return View();
+            Configuration = _configuration;
         }
 
         void connectionString()
         {
-
-            //połączenia serwera
-            con.ConnectionString = "Server=localhost\\SQLEXPRESS;Initial Catalog=epicDataBase;Persist Security Info=True;User ID=sa;Password=haslo";
+            con.ConnectionString = this.Configuration.GetConnectionString("ConString");
         }
 
         //ta funkcja szyfruje haslo
-        string Encode2PasswordToBase64(LoginModel log)
+        //string Encode2PasswordToBase64(LoginModel log)
+        //{
+        //    try
+        //    {
+        //        byte[] encData_byte = new byte[log.EnPassword.Length];
+        //        encData_byte = System.Text.Encoding.UTF8.GetBytes(log.EnPassword);
+        //       log.Password = Convert.ToBase64String(encData_byte);
+        //        return log.Password;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception("Error in base64Encode" + ex.Message);
+        //    }
+        //}
+
+        [HttpGet]
+        public IActionResult Index(UserModel usr) //Strona z logowaniem
         {
-            try
-            {
-                byte[] encData_byte = new byte[log.EnPassword.Length];
-                //tutaj monke psuje haslo i robi inne
-                encData_byte = System.Text.Encoding.UTF8.GetBytes(log.EnPassword);
-                log.Password = Convert.ToBase64String(encData_byte);
-                return log.Password;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error in base64Encode" + ex.Message);
-            }
+            return View();
         }
 
         //Logowanie
         public async Task<IActionResult> Index(LoginModel log, UserModel usr)
         {
-
-
+            log.Password = EncriptController.Encrypt(log.Password);
             //sprawdza czy w bazie danych jest taki urzytkownik
-            Encode2PasswordToBase64(log);
+            //Encode2PasswordToBase64(log);
             connectionString();
             con.Open();
             com.Connection = con;
@@ -73,7 +68,6 @@ namespace Depozyto.Controllers
                 usr.LastName = dr["Nazwisko"].ToString();
                 usr.Email = dr["Email"].ToString();
                 usr.Role = dr["Role"].ToString();
-
                 
                 //znalazl urzytkownika
 
@@ -111,101 +105,9 @@ namespace Depozyto.Controllers
                 ViewData["LoginFlag"] = "Nieprawidłowy login lub hasło!!!";
                 return View();
             }
-
-
-
-
-        }
-        // Login/Register
-        public ActionResult Register()
-        {
-
-            return View();
-        }
-        //ta funkcja szyfruje haslo
-        string EncodePasswordToBase64(RegisterModel reg)
-        {
-            try
-            {
-                byte[] encData_byte = new byte[reg.DePassword.Length];
-                //tutaj monke psuje haslo i robi inne
-                encData_byte = System.Text.Encoding.UTF8.GetBytes(reg.DePassword);
-                reg.Password = Convert.ToBase64String(encData_byte);
-                return reg.Password;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error in base64Encode" + ex.Message);
-            }
         }
 
-        //sprawdza czy mozemy zapisac uzytkownika w bazie danych (czy nie ma tos takiego loginu itp)
-        void CheckRegister(RegisterModel reg)
-        {
-            //sprawdza czy w bazie danych jest już taki urzytkownik
-            connectionString();
-            con.Open();
-            com.Connection = con;
-            com.CommandText = "select * from dbo.Clients where Login='" + reg.Login + "' or Email ='"+ reg.Email+"'";
-            dr = com.ExecuteReader();
-            if (dr.Read())
-            {
-                con.Close();
-                //jest taki urzytkownik (nie mozna zarejestrowac)
-                canRegister = false;
-            }
-            else
-            {
-                con.Close();
-                //nie ma takiego urzttkownika (mozna zarejestrowac)
-                canRegister = true;
-            }
-        }
-
-        //Tutaj zapisujemy dane na bazie danych
-        [HttpPost]
-        public ActionResult CreateAccount(RegisterModel reg)
-        {
-            //sprawdzamy czy mozemy zarejestrowac nowego klienta
-            EncodePasswordToBase64(reg);
-            CheckRegister(reg);
-
-
-            if (canRegister)
-            {
-                connectionString();
-                SqlCommand com = new SqlCommand("SP_Client", con);
-                com.CommandType = CommandType.StoredProcedure;
-                com.Parameters.AddWithValue("@Login", reg.Login);
-                com.Parameters.AddWithValue("@Haslo", reg.Password);
-                com.Parameters.AddWithValue("@Imie", reg.Name);
-                com.Parameters.AddWithValue("@Nazwisko", reg.LastName);
-                com.Parameters.AddWithValue("@Email", reg.Email);
-                com.Parameters.AddWithValue("@Role", "User");
-                con.Open();
-                int i = com.ExecuteNonQuery();
-                con.Close();
-                if (i >= 1)
-                {
-                    //Success
-                    return View();
-                }
-                else
-                {
-                    //Failed
-                    return View("Register");
-                }
-            }
-            else
-            {
-                //nie moze zarejestrowac
-                ViewData["LoginDouble"] = "Login lub Email jest już zajęty przez innego użytkownika";
-                return View("Register");
-            }
-
-        }
-
-        public IActionResult Logout()
+        public IActionResult Logout() //Wylogowanie
         {
             Response.Cookies.Delete("sesja");
 

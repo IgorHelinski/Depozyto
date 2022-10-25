@@ -17,17 +17,25 @@ namespace Depozyto.Controllers
         public static IList<AddContractorsModel> contractors = new List<AddContractorsModel>()
         {
             //new AccountModel(){ num = "dfasj", money = "fjands", ownerEmail = "fdnjbask"}
-
         };
 
-        
+        private IConfiguration Configuration;
+        public ContractorsController(IConfiguration _configuration)
+        {
+            Configuration = _configuration;
+        }
+
+        void connectionString()
+        {
+            con.ConnectionString = this.Configuration.GetConnectionString("ConString");
+        }
 
         [Authorize]
-        public IActionResult Index()
+        public IActionResult Index() //Strona główna
         {
-            contractors.Clear();
+            //Wczytuje kontrachentów z bazy danych i wstawia ich do listy
 
-            //get all users accounts and put them in list
+            contractors.Clear();
             connectionString();
             con.Open();
             com.Connection = con;
@@ -59,34 +67,26 @@ namespace Depozyto.Controllers
                 }
 
                 con.Close();
-
                 return View(contractors);
-
             }
             else
             {
+                con.Close();
                 return View(contractors);
             }
-            
         }
 
         [Authorize]
-        public IActionResult AddContractor()
+        public IActionResult AddContractor() //Strona dodawania kontrahenta
         {
             return View();
-        }
-        
-        void connectionString()
-        {
-
-            //połączenia serwera
-            con.ConnectionString = "Server=localhost\\SQLEXPRESS;Initial Catalog=epicDataBase;Persist Security Info=True;User ID=sa;Password=haslo";
         }
 
         [HttpPost]
         [Authorize]
-        public ActionResult CreateContractor(AddContractorsModel addContractors)
+        public ActionResult CreateContractor(AddContractorsModel addContractors) //Dodawanie kontrahenta
         {
+            //Zapisanie wpisanych danych do bazy danych
             connectionString();
             con.Open();
             SqlCommand com = new SqlCommand("SP_Contractors", con);
@@ -106,7 +106,7 @@ namespace Depozyto.Controllers
             else
             {
                 //Failed
-                return View("Register");
+                return View("AddContractor");
             }
         }
     }

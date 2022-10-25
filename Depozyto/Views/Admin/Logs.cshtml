@@ -28,6 +28,12 @@
                 <th>
                     <p>Data</p>
                 </th>
+                <th>
+                    <p>Nadawca płatnosci Id</p>
+                </th>
+                <th>
+                    <p>Adresat płatnosci Id</p>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -49,6 +55,12 @@
                     </td>
                     <td>
                         @item.Date
+                    </td>
+                    <td>
+                        @item.FromAccountId
+                    </td>
+                    <td>
+                        @item.ToAccountId
                     </td>
                 </tr>
             }

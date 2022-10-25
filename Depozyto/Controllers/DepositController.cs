@@ -1,14 +1,13 @@
 ﻿using Depozyto.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
 using System.Data.SqlClient;
 using System.Security.Claims;
 
 namespace Depozyto.Controllers
 {
-    public class AccountsController : Controller
-    {
+	public class DepositController : Controller
+	{
         public static IList<AccountModel> accounts = new List<AccountModel>()
         {
             //new AccountModel(){ num = "dfasj", money = "fjands", ownerEmail = "fdnjbask"}
@@ -19,7 +18,7 @@ namespace Depozyto.Controllers
         SqlDataReader dr;
 
         private IConfiguration Configuration;
-        public AccountsController(IConfiguration _configuration)
+        public DepositController(IConfiguration _configuration)
         {
             Configuration = _configuration;
         }
@@ -29,10 +28,10 @@ namespace Depozyto.Controllers
             con.ConnectionString = this.Configuration.GetConnectionString("ConString");
         }
 
-        [Authorize] 
-        public IActionResult Index(AccountModel acc) //Strona główna
+        [Authorize]
+        public IActionResult Deposit() //Strona wpłacania środków
         {
-            //Wczytuje konta z bady danych i wstawia je do tabeli aby je wyswietlic
+            //Wczytuje konta z bazy danych i wstawia do tabeli
 
             accounts.Clear();
 
@@ -54,6 +53,7 @@ namespace Depozyto.Controllers
                 while (dr.Read())
                 {
 
+
                     accounts.Add(new AccountModel
                     {
                         num = dr["num"].ToString(),
@@ -64,52 +64,44 @@ namespace Depozyto.Controllers
 
                 con.Close();
                 return View(accounts);
-            }
-            else
-            {
-                con.Close();
-                return View(accounts);
-            }
-        }
 
-        [Authorize]
-        public IActionResult AddAccount() //Strona dodawania nowego konta
-        {
-            return View(new AccountModel());
-        }
+            }
 
-        [Authorize]
-        public IActionResult Add(AccountModel acc) //Dodanie nowego konta
-        {
-            connectionString();
-            SqlCommand com = new SqlCommand("SP_Account", con);
-            com.CommandType = CommandType.StoredProcedure;
-            com.Parameters.AddWithValue("@num", acc.num);
-            com.Parameters.AddWithValue("@money", 0f);
-            com.Parameters.AddWithValue("@ownerEmail", User.FindFirst(ClaimTypes.Email).Value);
-            
-            con.Open();
-            int i = com.ExecuteNonQuery();
             con.Close();
-            if (i >= 1)
-            {
-                accounts.Add(new AccountModel
-                {
-                    num = acc.num,
-                    money = "0",
-                    ownerEmail = User.FindFirst(ClaimTypes.Email).Value
-                }) ;
-
-                //Success
-                return RedirectToAction("Index", "Accounts", accounts);
-            }
-            else
-            {
-                //Failed
-                return View();
-            }
-            
+            return View(accounts);
         }
 
+        [Authorize]
+        public IActionResult DepositMoney(AccountModel acc) //Dodawanie środków do konta
+        {
+            //Sprawdzamy ile pieniędzy znajduje się na koncie użytkownika
+
+            float b = 0;
+            connectionString();
+            con.Open();
+            com.Connection = con;
+            com.CommandText = "SELECT money FROM Accounts WHERE ownerEmail = '" + User.FindFirst(ClaimTypes.Email).Value + "' AND num = '" + acc.numer + "';";
+            dr = com.ExecuteReader();
+            if (dr.Read())
+            {
+                b = Convert.ToSingle((double)dr["Money"]);
+            }
+            con.Close();
+
+            //Wpłacamy środki na wybrane konto
+
+            connectionString();
+            con.Open();
+            com.Connection = con;
+
+            float amount = b + acc.kaska;
+
+            com.CommandText = "UPDATE Accounts SET money = '" + amount + "' WHERE ownerEmail = '" + User.FindFirst(ClaimTypes.Email).Value + "'AND num = '" + acc.numer + "';";
+            com.ExecuteNonQuery();
+
+            con.Close();
+
+            return RedirectToAction("Index", "Accounts", accounts);
+        }
     }
 }

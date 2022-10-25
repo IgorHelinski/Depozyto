@@ -4,7 +4,7 @@
 <body>
     <div class="container">
         <center>
-            <form id="Transaction" asp-action="Przelew" asp-controller="Transaction" method="post">
+            <form id="Transaction" asp-action="Payment" asp-controller="Transaction" method="post">
             <div class="card text-white bg-secondary mb-4" style="max-width:450px;">
                 <div class="container card-body">
                     @if(Html.DropDownList("Accounts") == null)

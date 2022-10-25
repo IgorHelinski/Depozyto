@@ -7,5 +7,7 @@
         public string Amount { get; set; }
         public string Title { get; set; }
         public string Date { get; set; }
+        public int FromAccountId {get; set;}
+        public int ToAccountId { get; set; }
     }
 }

@@ -5,35 +5,30 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Data;
 using System.Data.SqlClient;
 using System.Security.Claims;
+using Microsoft.Extensions.Configuration;
+using System.Configuration;
 
 namespace Depozyto.Controllers
 {
     public class TransactionController : Controller
     {
-        public static IList<HistoryModel> history = new List<HistoryModel>()
-        {
-            //new AccountModel(){ num = "dfasj", money = "fjands", ownerEmail = "fdnjbask"}
-        };
-
-
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
         SqlDataReader dr;
+
+        private IConfiguration Configuration;
+        public TransactionController(IConfiguration _configuration)
+        {
+            Configuration = _configuration;
+        }
+
         void connectionString()
         {
-            //połączenia serwera
-            con.ConnectionString = "Server=localhost\\SQLEXPRESS;Initial Catalog=epicDataBase;Persist Security Info=True;User ID=sa;Password=haslo";
+            con.ConnectionString = this.Configuration.GetConnectionString("ConString");
         }
 
         [Authorize]
-        public IActionResult Index()
-        {
-
-            return View();
-        }
-
-        [Authorize]
-        public IActionResult Transaction()
+        public IActionResult Transaction() //Strona wykonywania tranzakcji
         {
             List<SelectListItem> accounts = new List<SelectListItem>();
             List<SelectListItem> contractors = new List<SelectListItem>();
@@ -41,7 +36,7 @@ namespace Depozyto.Controllers
             accounts.Clear();
             contractors.Clear();
 
-            //get all users accounts and put them in list
+            //znajduje i wyświetla konta zalogowanego użytkownika
             connectionString();
             con.Open();
             com.Connection = con;
@@ -52,7 +47,6 @@ namespace Depozyto.Controllers
                 accounts.Add(new SelectListItem
                 {
                     Text = dr["num"].ToString(),
-
                 });
 
                 while (dr.Read())
@@ -61,23 +55,19 @@ namespace Depozyto.Controllers
                     accounts.Add(new SelectListItem
                     {
                         Text = dr["num"].ToString(),
-                       
                     });
                 }
 
                 con.Close();
-                //success
                 ViewBag.Accounts = accounts;
-                //return View();
-
             }
             else
             {
                 con.Close();
                 ViewBag.Accounts = accounts;
-                
             }
 
+            //znajduje i wyświetla kontrahentów przypisanych do zalogowanego użytkownika
             connectionString();
             con.Open();
             com.Connection = con;
@@ -88,7 +78,6 @@ namespace Depozyto.Controllers
                 contractors.Add(new SelectListItem
                 {
                     Text = dr["Accountnumber"].ToString() + "," + dr["Email"].ToString()
-
                 });
 
                 while (dr.Read())
@@ -97,14 +86,12 @@ namespace Depozyto.Controllers
                     contractors.Add(new SelectListItem
                     {
                         Text = dr["Accountnumber"].ToString() + "," + dr["Email"].ToString()
-
                     }) ;
                 }
 
                 con.Close();
                 ViewBag.Contractors = contractors;
                 return View();
-
             }
             else
             {
@@ -112,24 +99,21 @@ namespace Depozyto.Controllers
                 ViewBag.Contractors = contractors;
                 return View();
             }
-
-
         }
 
         [Authorize]
-        public IActionResult Przelew(TransactionModel trans)
+        public IActionResult Payment(TransactionModel trans) //Przelewanie pieniędzy
         {
-            //kod do przesylania pieniendzy między kontami
-
             //Sprawdzamy ile mamy kasy na koncie
             float b = 0;  
             connectionString();
             con.Open();
             com.Connection = con;
-            com.CommandText = "SELECT money FROM Accounts WHERE ownerEmail = '" + User.FindFirst(ClaimTypes.Email).Value + "' AND num = '" + trans.Accounts + "';";
+            com.CommandText = "SELECT * FROM Accounts WHERE ownerEmail = '" + User.FindFirst(ClaimTypes.Email).Value + "' AND num = '" + trans.Accounts + "';";
             dr = com.ExecuteReader();
             if (dr.Read())
             {
+                trans.FromAccountId = Convert.ToInt32(dr["Id"]);
                 b = Convert.ToSingle((double)dr["Money"]);
             }
             con.Close();
@@ -158,10 +142,11 @@ namespace Depozyto.Controllers
             connectionString();
             con.Open();
             com.Connection = con;
-            com.CommandText = "SELECT money FROM Accounts WHERE ownerEmail = '" + email + "' AND num = '" + numerKonta + "';";
+            com.CommandText = "SELECT * FROM Accounts WHERE ownerEmail = '" + email + "' AND num = '" + numerKonta + "';";
             dr = com.ExecuteReader();
             if (dr.Read())
             {
+                trans.ToAccountId = Convert.ToInt32(dr["Id"]);
                 a = Convert.ToSingle((double)dr["Money"]);
             }
             con.Close();
@@ -188,6 +173,8 @@ namespace Depozyto.Controllers
             comm.Parameters.AddWithValue("@Amount", trans.cash);
             comm.Parameters.AddWithValue("@Title", trans.title);
             comm.Parameters.AddWithValue("@Date", trans.date);
+            comm.Parameters.AddWithValue("@FromAccountId", trans.FromAccountId);
+            comm.Parameters.AddWithValue("@ToAccountId", trans.ToAccountId);
             con.Open();
             int i = comm.ExecuteNonQuery();
             con.Close();
@@ -201,53 +188,6 @@ namespace Depozyto.Controllers
                 //Failed
                 return RedirectToAction("Transaction", "Transaction");
             }
-        }
-
-        [Authorize]
-        public IActionResult History()
-        {
-            history.Clear();
-
-            //get all users accounts and put them in list
-            connectionString();
-            con.Open();
-            com.Connection = con;
-            com.CommandText = "select * from dbo.TransactionLogs where FromEmail='" + User.FindFirst(ClaimTypes.Email).Value + "'or ToEmail = '"+ User.FindFirst(ClaimTypes.Email).Value + "';";
-            dr = com.ExecuteReader();
-            if (dr.Read())
-            {
-
-                history.Add(new HistoryModel
-                {
-                    FromEmail = dr["FromEmail"].ToString(),
-                    ToEmail = dr["ToEmail"].ToString(),
-                    Amount = dr["Amount"].ToString(),
-                    Title = dr["Title"].ToString(),
-                    Date = dr["Date"].ToString()
-                });
-
-                while (dr.Read())
-                {
-
-                    history.Add(new HistoryModel
-                    {
-                        FromEmail = dr["FromEmail"].ToString(),
-                        ToEmail = dr["ToEmail"].ToString(),
-                        Amount = dr["Amount"].ToString(),
-                        Title = dr["Title"].ToString(),
-                        Date = dr["Date"].ToString()
-                    });
-                }
-
-
-                con.Close();
-                return View(history);
-            }
-            else
-            {
-                return View(history);
-            }
-
         }
 
     }

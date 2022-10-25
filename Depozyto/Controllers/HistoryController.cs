@@ -1,13 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Depozyto.Models;
+﻿using Depozyto.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
 using System.Security.Claims;
-using System.Dynamic;
 
 namespace Depozyto.Controllers
 {
-    public class DashBoardController : Controller
+    public class HistoryController : Controller
     {
         public static IList<HistoryModel> history = new List<HistoryModel>()
         {
@@ -19,7 +18,7 @@ namespace Depozyto.Controllers
         SqlDataReader dr;
 
         private IConfiguration Configuration;
-        public DashBoardController(IConfiguration _configuration)
+        public HistoryController(IConfiguration _configuration)
         {
             Configuration = _configuration;
         }
@@ -30,11 +29,10 @@ namespace Depozyto.Controllers
         }
 
         [Authorize]
-        public IActionResult Index() //Strona główna
+        public IActionResult History() //Strona historii tranzakcji
         {
+            //znajduje logi tranzakcji z bazy danych i wstawia je do tabeli
             history.Clear();
-
-            //get all users accounts and put them in list
             connectionString();
             con.Open();
             com.Connection = con;
@@ -73,20 +71,6 @@ namespace Depozyto.Controllers
                 con.Close();
                 return View(history);
             }
-        }
-
-        //Sukces
-        [Authorize]
-        public IActionResult Succes()
-        {
-            return View();
-        }
-
-        //Anulowanie
-        [Authorize]
-        public IActionResult Cancel()
-        {
-            return View();
         }
     }
 }
