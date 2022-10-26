@@ -79,7 +79,8 @@ namespace Depozyto.Controllers
                     new Claim(ClaimTypes.Email,usr.Email),
                     new Claim(ClaimTypes.Name,usr.Name),
                     new Claim(ClaimTypes.Surname,usr.LastName),
-                    new Claim(ClaimTypes.Role,usr.Role)
+                    new Claim(ClaimTypes.Role,usr.Role),
+                    new Claim(ClaimTypes.SerialNumber, dr["Id"].ToString())
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

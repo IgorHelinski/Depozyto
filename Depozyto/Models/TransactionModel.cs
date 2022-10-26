@@ -7,6 +7,7 @@
         public int cash { get; set; }
         public string title { get; set; }
         public string date { get; set;}
+        public string currency { get; set; }
 
         public int FromAccountId { get; set; }
         public int ToAccountId { get; set; }

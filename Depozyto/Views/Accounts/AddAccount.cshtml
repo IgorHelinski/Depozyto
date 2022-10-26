@@ -22,6 +22,16 @@
                         </div>
                     </fieldset>
 
+                    @if (Html.DropDownList("Currency") == null)
+                    {
+                        <h1>Nie masz żadnych walut</h1>
+                    }
+                    else
+                    {
+                        <h5>Konto w walucie</h5>
+                        @Html.DropDownList("Currency",null,"Wybierz walutę", new{@class = "form-select", @name="currency"})
+                    }
+
                     <div class="row">
                         <div class="form-group col-md-12 text-center mt-md-2">
                             <input type="submit" value="Stwórz" class="btn btn-primary" />

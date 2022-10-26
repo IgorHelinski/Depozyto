@@ -1,0 +1,31 @@
+﻿@model Depozyto.Models.AdminModel
+@{
+	ViewData["Title"] = "Edytuj Użytkownika";
+}
+<html>
+	<body>
+		<center><h1>Edytuj Użytkownika</h1></center>
+		<div class="container">
+			<center>
+			<div class="container card bg-secondary mb-4" style="max-width: 500px;">
+				<h3>Edytuj Użytkownika</h3>
+				<form asp-action="EditUser" asp-controller="Admin">
+				<h5>Zmień Imię</h5>
+				<input asp-for="name" type="text" value="@ViewData["Imie"]" style="width: 80%" placeholder="Nowe Imię" class="form-control" id="name" />
+				<span asp-validation-for="name" class="text-danger"></span>
+				<h5>Zmień Nazwisko</h5>
+				<input asp-for="surname" type="text" value="@ViewData["Nazwisko"]" style="width: 80%" placeholder="Nowe Nazwisko" class="form-control" id="surname" />
+				<span asp-validation-for="surname" class="text-danger"></span>
+				<h5>Zmień Login</h5>
+				<input asp-for="login" type="text" value="@ViewData["Login"]" style="width: 80%" placeholder="Nowy Login" class="form-control" id="login" />
+				<span asp-validation-for="login" class="text-danger"></span>
+					@*<h5>Zmień Hasło</h5>
+				<input asp-for="password" type="text" value="@ViewData["Haslo"]" style="width: 80%" placeholder="Nowe Hasło" class="form-control" id="password" />
+				<span asp-validation-for="password" class="text-danger"></span>*@
+				<input type="submit" class="btn btn-success" />
+				</form>
+			</div>
+			</center>
+		</div>
+	</body>
+</html>

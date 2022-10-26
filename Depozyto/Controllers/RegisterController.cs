@@ -89,11 +89,16 @@ namespace Depozyto.Controllers
                 com.Parameters.AddWithValue("@Nazwisko", reg.LastName);
                 com.Parameters.AddWithValue("@Email", reg.Email);
                 com.Parameters.AddWithValue("@Role", "User");
+                com.Parameters.AddWithValue("@Blocked", 0);
                 con.Open();
                 int i = com.ExecuteNonQuery();
                 con.Close();
                 if (i >= 1)
                 {
+
+
+
+
                     //Success
                     return View();
                 }

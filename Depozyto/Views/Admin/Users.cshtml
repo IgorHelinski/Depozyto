@@ -68,6 +68,7 @@
                     <td>
                         @Html.ActionLink("Zmień Role", "ChangeRole", new {  id=item.Email  })
                         @Html.ActionLink("Zablokuj", "DeleteUser", new {  id=item.Email  })
+                        @Html.ActionLink("Edytuj", "Edit", new { id=item.Email })
                     </td>
                 </tr>
             }

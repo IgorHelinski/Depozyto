@@ -22,12 +22,14 @@
                 <p>Numer konta</p>
             </th>
             <th>
-                    <p>Ilość środków <bold>PLN</bold></p>
+                    <p>Ilość środków</p>
             </th>
             <th>
                 <p>Email wlasciciela</p>
             </th>
-            
+                <th>
+                    <p>Waluta</p>
+                </th>
         </tr>
     </thead>
     <tbody>
@@ -42,6 +44,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ownerEmail)
+            </td>
+            <td>
+                @item.Currency
             </td>
            
         </tr>

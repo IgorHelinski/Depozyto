@@ -1,9 +1,12 @@
 ﻿using Depozyto.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Data;
 using System.Data.SqlClient;
 using System.Security.Claims;
+using Microsoft.Extensions.Configuration;
+using System.Configuration;
 
 namespace Depozyto.Controllers
 {
@@ -13,6 +16,7 @@ namespace Depozyto.Controllers
         {
             //new AccountModel(){ num = "dfasj", money = "fjands", ownerEmail = "fdnjbask"}
         };
+        
 
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
@@ -48,7 +52,8 @@ namespace Depozyto.Controllers
                 {
                     num = dr["num"].ToString(),
                     money = dr["money"].ToString(),
-                    ownerEmail = dr["ownerEmail"].ToString()
+                    ownerEmail = dr["ownerEmail"].ToString(),
+                    Currency = dr["Currency"].ToString()
                 });
 
                 while (dr.Read())
@@ -58,7 +63,8 @@ namespace Depozyto.Controllers
                     {
                         num = dr["num"].ToString(),
                         money = dr["money"].ToString(),
-                        ownerEmail = dr["ownerEmail"].ToString()
+                        ownerEmail = dr["ownerEmail"].ToString(),
+                        Currency = dr["Currency"].ToString()
                     });
                 }
 
@@ -73,9 +79,44 @@ namespace Depozyto.Controllers
         }
 
         [Authorize]
-        public IActionResult AddAccount() //Strona dodawania nowego konta
+        public IActionResult AddAccount(CurrenciesModel curr) //Strona dodawania nowego konta
         {
-            return View(new AccountModel());
+            List<SelectListItem> currencies = new List<SelectListItem>();
+
+            currencies.Clear();
+
+            connectionString();
+            con.Open();
+            com.Connection = con;
+            com.CommandText = "select * from dbo.Currencies;";
+            dr = com.ExecuteReader();
+            if (dr.Read())
+            {
+
+                currencies.Add(new SelectListItem
+                {
+                    Text = dr["Currency"].ToString()
+                });
+
+                while (dr.Read())
+                {
+
+                    currencies.Add(new SelectListItem
+                    {
+                        Text = dr["Currency"].ToString()
+                    });
+                }
+
+                con.Close();
+                ViewBag.Currency = currencies;
+                return View(new AccountModel());
+            }
+            else
+            {
+                con.Close();
+                ViewBag.Currency = currencies;
+                return View(new AccountModel());
+            }
         }
 
         [Authorize]
@@ -87,7 +128,7 @@ namespace Depozyto.Controllers
             com.Parameters.AddWithValue("@num", acc.num);
             com.Parameters.AddWithValue("@money", 0f);
             com.Parameters.AddWithValue("@ownerEmail", User.FindFirst(ClaimTypes.Email).Value);
-            
+            com.Parameters.AddWithValue("@Currency", acc.Currency);
             con.Open();
             int i = com.ExecuteNonQuery();
             con.Close();
@@ -97,7 +138,8 @@ namespace Depozyto.Controllers
                 {
                     num = acc.num,
                     money = "0",
-                    ownerEmail = User.FindFirst(ClaimTypes.Email).Value
+                    ownerEmail = User.FindFirst(ClaimTypes.Email).Value,
+                    Currency = acc.Currency
                 }) ;
 
                 //Success

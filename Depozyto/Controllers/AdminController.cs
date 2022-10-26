@@ -51,14 +51,7 @@ namespace Depozyto.Controllers
 
             users.Clear();
 
-            if (dr["Blocked"].ToString() == sample)
-            {
-                bruh = true;
-            }
-            else
-            {
-                bruh = false;
-            }
+            
 
             connectionString();
             con.Open();
@@ -67,6 +60,15 @@ namespace Depozyto.Controllers
             dr = com.ExecuteReader();
             if (dr.Read())
             {
+
+                if (dr["Blocked"].ToString() == sample)
+                {
+                    bruh = true;
+                }
+                else
+                {
+                    bruh = false;
+                }
 
                 users.Add(new UserModel
                 {
@@ -81,6 +83,15 @@ namespace Depozyto.Controllers
 
                 while (dr.Read())
                 {
+
+                    if (dr["Blocked"].ToString() == sample)
+                    {
+                        bruh = true;
+                    }
+                    else
+                    {
+                        bruh = false;
+                    }
 
                     users.Add(new UserModel
                     {
@@ -239,6 +250,55 @@ namespace Depozyto.Controllers
                 return View(history);
             }
 
+        }
+        public IActionResult Edit(string Id)
+        {
+            //string EnPassword;
+            connectionString();
+            con.Open();
+            com.Connection = con;
+            com.CommandText = "Select * from dbo.Clients where Email = '" + Id + "';";
+
+            dr = com.ExecuteReader();
+            if (dr.Read())
+            {
+                ViewData["Login"] = dr["Login"].ToString();
+                ViewData["Imie"] = dr["Imie"].ToString();
+                ViewData["Nazwisko"] = dr["Nazwisko"].ToString();
+                // EnPassword = dr["Haslo"].ToString();
+
+            }
+            else
+            {
+                // EnPassword = "byleco";
+            }
+
+            //string Password = EncriptController.Decrypt(EnPassword);
+
+            //ViewData["Haslo"] = Password;
+            TempData["EditID"] = Id;
+            return View();
+        }
+        public IActionResult EditUser(AdminModel adm)
+        {
+            string changeEmail;
+            changeEmail = TempData["EditID"].ToString();
+            // adm.password = EncriptController.Encrypt(adm.password);
+            connectionString();
+            con.Open();
+            com.Connection = con;
+
+            com.CommandText = "UPDATE Clients SET Imie = '" + adm.name + "' WHERE Email = '" + changeEmail + "';";
+            com.ExecuteNonQuery();
+            com.CommandText = "UPDATE Clients SET Nazwisko = '" + adm.surname + "' WHERE Email = '" + changeEmail + "';";
+            com.ExecuteNonQuery();
+            com.CommandText = "UPDATE Clients SET Login = '" + adm.login + "' WHERE Email = '" + changeEmail + "';";
+            com.ExecuteNonQuery();
+            //com.CommandText = "UPDATE Clients SET Haslo = '" + adm.password + "' WHERE Email = '" + changeEmail + "';";
+            //com.ExecuteNonQuery();
+            con.Close();
+
+            return RedirectToAction("Index", "Admin");
         }
     }
 }
