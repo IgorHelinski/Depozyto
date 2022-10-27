@@ -10,5 +10,6 @@ namespace Depozyto.Models
         public string Accountnumber { get; set; }
         public string Email { get; set; }
         public string OwnerEmail { get; set; }
+        public int ClientId { get; set; }
     }
 }

@@ -25,7 +25,7 @@
                     <p>Ilość środków</p>
             </th>
             <th>
-                <p>Email wlasciciela</p>
+                <p>ID właściciela</p>
             </th>
                 <th>
                     <p>Waluta</p>
@@ -43,7 +43,7 @@
                 @Html.DisplayFor(modelItem => item.money)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ownerEmail)
+                @item.ClientId
             </td>
             <td>
                 @item.Currency

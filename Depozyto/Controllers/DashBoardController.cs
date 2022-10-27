@@ -44,8 +44,8 @@ namespace Depozyto.Controllers
 
                 history.Add(new HistoryModel
                 {
-                    //FromEmail = dr["FromEmail"].ToString(),
-                    //ToEmail = dr["ToEmail"].ToString(),
+                    FromEmail = dr["FromClientId"].ToString(),
+                    ToEmail = dr["ToClientId"].ToString(),
                     Amount = dr["Amount"].ToString(),
                     Title = dr["Title"].ToString(),
                     Date = dr["Date"].ToString()
@@ -56,8 +56,8 @@ namespace Depozyto.Controllers
 
                     history.Add(new HistoryModel
                     {
-                        //FromEmail = dr["FromEmail"].ToString(),
-                        //ToEmail = dr["ToEmail"].ToString(),
+                        FromEmail = dr["FromClientId"].ToString(),
+                        ToEmail = dr["ToClientId"].ToString(),
                         Amount = dr["Amount"].ToString(),
                         Title = dr["Title"].ToString(),
                         Date = dr["Date"].ToString()

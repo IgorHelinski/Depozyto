@@ -50,7 +50,7 @@ namespace Depozyto.Controllers
                     Surname = dr["Surname"].ToString(),
                     Accountnumber = dr["Accountnumber"].ToString(),
                     Email = dr["Email"].ToString(),
-                    //OwnerEmail = dr["ownerEmail"].ToString()
+                    ClientId = Convert.ToInt32(dr["ClientId"])
                 });
 
                 while (dr.Read())
@@ -62,7 +62,7 @@ namespace Depozyto.Controllers
                         Surname = dr["Surname"].ToString(),
                         Accountnumber = dr["Accountnumber"].ToString(),
                         Email = dr["Email"].ToString(),
-                        //OwnerEmail = dr["ownerEmail"].ToString()
+                        ClientId = Convert.ToInt32(dr["ClientId"])
                     });
                 }
 

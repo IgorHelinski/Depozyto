@@ -55,7 +55,7 @@ namespace Depozyto.Controllers
                 {
                     num = dr["num"].ToString(),
                     money = dr["money"].ToString(),
-                    
+                    ClientId = Convert.ToInt32(dr["ClientId"]),
                     Currency = dr["Currency"].ToString()
                 });
 
@@ -66,7 +66,7 @@ namespace Depozyto.Controllers
                     {
                         num = dr["num"].ToString(),
                         money = dr["money"].ToString(),
-                        
+                        ClientId = Convert.ToInt32(dr["ClientId"]),
                         Currency = dr["Currency"].ToString()
                     });
                 }
