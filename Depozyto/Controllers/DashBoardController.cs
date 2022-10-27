@@ -32,21 +32,20 @@ namespace Depozyto.Controllers
         [Authorize]
         public IActionResult Index() //Strona główna
         {
+            //znajduje logi tranzakcji z bazy danych i wstawia je do tabeli
             history.Clear();
-
-            //get all users accounts and put them in list
             connectionString();
             con.Open();
             com.Connection = con;
-            com.CommandText = "select * from dbo.TransactionLogs where FromEmail='" + User.FindFirst(ClaimTypes.Email).Value + "'or ToEmail = '" + User.FindFirst(ClaimTypes.Email).Value + "';";
+            com.CommandText = "select * from dbo.Transactions where FromClientId='" + User.FindFirst(ClaimTypes.SerialNumber).Value + "'or ToClientId = '" + User.FindFirst(ClaimTypes.SerialNumber).Value + "';";
             dr = com.ExecuteReader();
             if (dr.Read())
             {
 
                 history.Add(new HistoryModel
                 {
-                    FromEmail = dr["FromEmail"].ToString(),
-                    ToEmail = dr["ToEmail"].ToString(),
+                    //FromEmail = dr["FromEmail"].ToString(),
+                    //ToEmail = dr["ToEmail"].ToString(),
                     Amount = dr["Amount"].ToString(),
                     Title = dr["Title"].ToString(),
                     Date = dr["Date"].ToString()
@@ -57,8 +56,8 @@ namespace Depozyto.Controllers
 
                     history.Add(new HistoryModel
                     {
-                        FromEmail = dr["FromEmail"].ToString(),
-                        ToEmail = dr["ToEmail"].ToString(),
+                        //FromEmail = dr["FromEmail"].ToString(),
+                        //ToEmail = dr["ToEmail"].ToString(),
                         Amount = dr["Amount"].ToString(),
                         Title = dr["Title"].ToString(),
                         Date = dr["Date"].ToString()

@@ -38,7 +38,7 @@ namespace Depozyto.Controllers
             connectionString();
             con.Open();
             com.Connection = con;
-            com.CommandText = "select * from dbo.Accounts where ownerEmail='" + User.FindFirst(ClaimTypes.Email).Value + "';";
+            com.CommandText = "select * from dbo.Accounts where ClientId='" + User.FindFirst(ClaimTypes.SerialNumber).Value + "';";
             dr = com.ExecuteReader();
             if (dr.Read())
             {
@@ -47,7 +47,7 @@ namespace Depozyto.Controllers
                 {
                     num = dr["num"].ToString(),
                     money = dr["money"].ToString(),
-                    ownerEmail = dr["ownerEmail"].ToString()
+                    //ownerEmail = dr["ownerEmail"].ToString()
                 });
 
                 while (dr.Read())
@@ -58,7 +58,7 @@ namespace Depozyto.Controllers
                     {
                         num = dr["num"].ToString(),
                         money = dr["money"].ToString(),
-                        ownerEmail = dr["ownerEmail"].ToString()
+                        //ownerEmail = dr["ownerEmail"].ToString()
                     });
                 }
 
@@ -80,7 +80,7 @@ namespace Depozyto.Controllers
             connectionString();
             con.Open();
             com.Connection = con;
-            com.CommandText = "SELECT money FROM Accounts WHERE ownerEmail = '" + User.FindFirst(ClaimTypes.Email).Value + "' AND num = '" + acc.numer + "';";
+            com.CommandText = "SELECT money FROM Accounts WHERE ClientId = '" + User.FindFirst(ClaimTypes.SerialNumber).Value + "' AND num = '" + acc.numer + "';";
             dr = com.ExecuteReader();
             if (dr.Read())
             {
@@ -96,7 +96,7 @@ namespace Depozyto.Controllers
 
             float amount = b + acc.kaska;
 
-            com.CommandText = "UPDATE Accounts SET money = '" + amount + "' WHERE ownerEmail = '" + User.FindFirst(ClaimTypes.Email).Value + "'AND num = '" + acc.numer + "';";
+            com.CommandText = "UPDATE Accounts SET money = '" + amount + "' WHERE ClientId = '" + User.FindFirst(ClaimTypes.SerialNumber).Value + "'AND num = '" + acc.numer + "';";
             com.ExecuteNonQuery();
 
             con.Close();

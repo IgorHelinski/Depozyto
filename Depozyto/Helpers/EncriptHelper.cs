@@ -2,9 +2,9 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Depozyto.Controllers
+namespace Depozyt.Helpers
 {
-    public class EncriptController : Controller
+    public class EncriptHelper : Controller
     {
         public static string Encrypt(string text)
         {

@@ -9,5 +9,8 @@
         public string Date { get; set; }
         public int FromAccountId {get; set;}
         public int ToAccountId { get; set; }
+
+        public int FromClientId { get; set; }
+        public int ToClientId { get; set; }
     }
 }

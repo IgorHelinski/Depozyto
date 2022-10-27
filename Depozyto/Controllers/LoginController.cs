@@ -6,6 +6,7 @@ using System.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
+using Depozyt.Helpers;
 
 namespace Depozyto.Controllers
 {
@@ -52,20 +53,20 @@ namespace Depozyto.Controllers
         //Logowanie
         public async Task<IActionResult> Index(LoginModel log, UserModel usr)
         {
-            log.Password = EncriptController.Encrypt(log.Password);
+            log.Password = EncriptHelper.Encrypt(log.Password);
             //sprawdza czy w bazie danych jest taki urzytkownik
             //Encode2PasswordToBase64(log);
             connectionString();
             con.Open();
             com.Connection = con;
-            com.CommandText = "select * from dbo.Clients where Login='" + log.Login + "' and Haslo='" + log.Password + "'";
+            com.CommandText = "select * from dbo.Clients where Login='" + log.Login + "' and ClientPassword='" + log.Password + "'";
             dr = com.ExecuteReader();
             if (dr.Read())
             {
                 usr.Login = dr["Login"].ToString();
-                usr.Password = dr["Haslo"].ToString();
-                usr.Name = dr["Imie"].ToString();
-                usr.LastName = dr["Nazwisko"].ToString();
+                usr.Password = dr["ClientPassword"].ToString();
+                usr.Name = dr["ClientName"].ToString();
+                usr.LastName = dr["ClientLastName"].ToString();
                 usr.Email = dr["Email"].ToString();
                 usr.Role = dr["Role"].ToString();
                 
@@ -81,6 +82,7 @@ namespace Depozyto.Controllers
                     new Claim(ClaimTypes.Surname,usr.LastName),
                     new Claim(ClaimTypes.Role,usr.Role),
                     new Claim(ClaimTypes.SerialNumber, dr["Id"].ToString())
+                    
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

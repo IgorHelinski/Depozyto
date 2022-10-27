@@ -14,6 +14,7 @@ namespace Depozyto.Models
         public string money { get; set; }
         public string ownerEmail { get; set; }
         public string Currency { get; set; }
+        public int ClientId { get; set; }
 
     }
 }

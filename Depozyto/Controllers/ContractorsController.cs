@@ -39,7 +39,7 @@ namespace Depozyto.Controllers
             connectionString();
             con.Open();
             com.Connection = con;
-            com.CommandText = "select * from dbo.Contractors where ownerEmail='" + User.FindFirst(ClaimTypes.Email).Value + "';";
+            com.CommandText = "select * from dbo.Contractors where ClientId='" + User.FindFirst(ClaimTypes.SerialNumber).Value + "';";
             dr = com.ExecuteReader();
             if (dr.Read())
             {
@@ -50,7 +50,7 @@ namespace Depozyto.Controllers
                     Surname = dr["Surname"].ToString(),
                     Accountnumber = dr["Accountnumber"].ToString(),
                     Email = dr["Email"].ToString(),
-                    OwnerEmail = dr["ownerEmail"].ToString()
+                    //OwnerEmail = dr["ownerEmail"].ToString()
                 });
 
                 while (dr.Read())
@@ -62,7 +62,7 @@ namespace Depozyto.Controllers
                         Surname = dr["Surname"].ToString(),
                         Accountnumber = dr["Accountnumber"].ToString(),
                         Email = dr["Email"].ToString(),
-                        OwnerEmail = dr["ownerEmail"].ToString()
+                        //OwnerEmail = dr["ownerEmail"].ToString()
                     });
                 }
 
@@ -95,7 +95,7 @@ namespace Depozyto.Controllers
             com.Parameters.AddWithValue("@Surname", addContractors.Surname);
             com.Parameters.AddWithValue("@Accountnumber", addContractors.Accountnumber);
             com.Parameters.AddWithValue("@Email", addContractors.Email);
-            com.Parameters.AddWithValue("@ownerEmail", User.FindFirst(ClaimTypes.Email).Value);
+            com.Parameters.AddWithValue("@ClientId", User.FindFirst(ClaimTypes.SerialNumber).Value);
             int i = com.ExecuteNonQuery();
             con.Close();
             if (i >= 1)

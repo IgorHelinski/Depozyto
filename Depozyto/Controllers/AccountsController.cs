@@ -37,13 +37,16 @@ namespace Depozyto.Controllers
         public IActionResult Index(AccountModel acc) //Strona główna
         {
             //Wczytuje konta z bady danych i wstawia je do tabeli aby je wyswietlic
+            
+
+
 
             accounts.Clear();
 
             connectionString();
             con.Open();
             com.Connection = con;
-            com.CommandText = "select * from dbo.Accounts where ownerEmail='" + User.FindFirst(ClaimTypes.Email).Value + "';";
+            com.CommandText = "select * from dbo.Accounts where ClientId='" + User.FindFirst(ClaimTypes.SerialNumber).Value + "';";
             dr = com.ExecuteReader();
             if (dr.Read())
             {
@@ -52,7 +55,7 @@ namespace Depozyto.Controllers
                 {
                     num = dr["num"].ToString(),
                     money = dr["money"].ToString(),
-                    ownerEmail = dr["ownerEmail"].ToString(),
+                    
                     Currency = dr["Currency"].ToString()
                 });
 
@@ -63,7 +66,7 @@ namespace Depozyto.Controllers
                     {
                         num = dr["num"].ToString(),
                         money = dr["money"].ToString(),
-                        ownerEmail = dr["ownerEmail"].ToString(),
+                        
                         Currency = dr["Currency"].ToString()
                     });
                 }
@@ -122,15 +125,28 @@ namespace Depozyto.Controllers
         [Authorize]
         public IActionResult Add(AccountModel acc) //Dodanie nowego konta
         {
+            
+
             connectionString();
-            SqlCommand com = new SqlCommand("SP_Account", con);
-            com.CommandType = CommandType.StoredProcedure;
-            com.Parameters.AddWithValue("@num", acc.num);
-            com.Parameters.AddWithValue("@money", 0f);
-            com.Parameters.AddWithValue("@ownerEmail", User.FindFirst(ClaimTypes.Email).Value);
-            com.Parameters.AddWithValue("@Currency", acc.Currency);
             con.Open();
-            int i = com.ExecuteNonQuery();
+            com.Connection = con;
+            com.CommandText = "select * from dbo.Clients Where Email = '"+ User.FindFirst(ClaimTypes.Email).Value + "';";
+            dr = com.ExecuteReader();
+            if (dr.Read())
+            {
+                acc.ClientId = Convert.ToInt32(dr["Id"]);
+            }
+            con.Close();
+            connectionString();
+            SqlCommand com2 = new SqlCommand("SP_Account", con);
+            com2.CommandType = CommandType.StoredProcedure;
+            com2.Parameters.AddWithValue("@num", acc.num);
+            com2.Parameters.AddWithValue("@money", 0f);
+            //com2.Parameters.AddWithValue("@ownerEmail", User.FindFirst(ClaimTypes.Email).Value);
+            com2.Parameters.AddWithValue("@Currency", acc.Currency);
+            com2.Parameters.AddWithValue("@ClientId", acc.ClientId);
+            con.Open();
+            int i = com2.ExecuteNonQuery();
             con.Close();
             if (i >= 1)
             {
@@ -138,8 +154,9 @@ namespace Depozyto.Controllers
                 {
                     num = acc.num,
                     money = "0",
-                    ownerEmail = User.FindFirst(ClaimTypes.Email).Value,
-                    Currency = acc.Currency
+                    //ownerEmail = User.FindFirst(ClaimTypes.Email).Value,
+                    Currency = acc.Currency,
+                    ClientId = acc.ClientId
                 }) ;
 
                 //Success

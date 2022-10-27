@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
 using System.Data;
 using System.Drawing;
+using Depozyt.Helpers;
 
 namespace Depozyto.Controllers
 {
@@ -84,9 +85,9 @@ namespace Depozyto.Controllers
                 SqlCommand com = new SqlCommand("SP_Client", con);
                 com.CommandType = CommandType.StoredProcedure;
                 com.Parameters.AddWithValue("@Login", reg.Login);
-                com.Parameters.AddWithValue("@Haslo", EncriptController.Encrypt(reg.Password));
-                com.Parameters.AddWithValue("@Imie", reg.Name);
-                com.Parameters.AddWithValue("@Nazwisko", reg.LastName);
+                com.Parameters.AddWithValue("@Password", EncriptHelper.Encrypt(reg.Password));
+                com.Parameters.AddWithValue("@Name", reg.Name);
+                com.Parameters.AddWithValue("@LastName", reg.LastName);
                 com.Parameters.AddWithValue("@Email", reg.Email);
                 com.Parameters.AddWithValue("@Role", "User");
                 com.Parameters.AddWithValue("@Blocked", 0);
